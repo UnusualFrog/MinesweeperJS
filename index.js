@@ -1,5 +1,28 @@
 const $ = selector => document.querySelector(selector);
 
+const setDifficulty = (evt) => {
+    playArea.difficulty = evt.target.id;
+};
+
+const hideButtons = () => {
+    $("#easy").hidden = true;
+    $("#medium").hidden = true;
+    $("#hard").hidden = true;
+    $("#reset").hidden = false;
+};
+
+const showButtons = () => {
+    $("#easy").hidden = false;
+    $("#medium").hidden = false;
+    $("#hard").hidden = false;
+    $("#reset").hidden = true;
+};
+
+const resetPage = () => {
+    showButtons();
+    $("#board").remove();
+};
+
 const createBoard = () => {
     if ($("#playArea").difficulty == "easy"){
         size = 9;
@@ -30,10 +53,13 @@ const createBoard = () => {
             const node = document.createElement("button");
             node.textContent = "⯀";
             
-            node.style.backgroundColor = "White";
+            node.style.backgroundColor = "#CCCCCC";
+            node.style.color = "#CCCCCC";
             node.style.fontFamily = 'Courier New, monospace';
             node.style.width = "25px";
             node.style.height = "25px";
+
+            //node.hiddenValue = getRandomHiddenValue();
 
             root.appendChild(node);
         }
@@ -42,27 +68,6 @@ const createBoard = () => {
     }
     $("#playArea").appendChild(root);
     console.log($("#playArea").difficulty);
-};
-
-const hideButtons = () => {
-    $("#easy").hidden = true;
-    $("#medium").hidden = true;
-    $("#hard").hidden = true;
-};
-
-const showButtons = () => {
-    $("#easy").hidden = false;
-    $("#medium").hidden = false;
-    $("#hard").hidden = false;
-};
-
-const setDifficulty = (evt) => {
-    playArea.difficulty = evt.target.id;
-};
-
-const resetPage = () => {
-    showButtons();
-    $("#board").remove();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -92,6 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
     medium.classList = "menu";
     hard.classList = "menu";
     reset.classList = "menu";
+    
+    reset.hidden = true;
 
     easy.addEventListener("click", hideButtons)
     medium.addEventListener("click", hideButtons)
