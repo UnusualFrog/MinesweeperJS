@@ -27,6 +27,12 @@ const createBoard = (difficulty) => {
     $("#playArea").appendChild(root);
 };
 
+const hideButtons = () => {
+    $("#Beginner").hidden = true;
+    $("#Intermediate").hidden = true;
+    $("#Expert").hidden = true;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     let title = document.createElement("h1");
     title.textContent = "Welcome to Minesweeper"
@@ -43,7 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
     medium.textContent = "Intermediate";
     hard.textContent = "Expert";
 
+    easy.id = "Beginner";
+    medium.id = "Intermediate";
+    hard.id = "Expert";
+
     easy.addEventListener("click", createBoard)
+
+    easy.addEventListener("click", hideButtons)
+    medium.addEventListener("click", hideButtons)
+    hard.addEventListener("click", hideButtons)
 
     playArea.appendChild(easy);
     playArea.appendChild(medium);
