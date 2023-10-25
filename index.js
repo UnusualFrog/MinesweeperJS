@@ -5,8 +5,7 @@ const createBoard = () => {
     root.id = "board";
     root.style.padding = "20px";
     root.style.border = "2px solid black";
-    root.style.margin = "auto"
-    //root.style.width = "500px";
+    root.style.margin = "auto"  
 
     var size;
     var mines;
