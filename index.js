@@ -3,14 +3,32 @@ const $ = selector => document.querySelector(selector);
 const createBoard = () => {
     let root = document.createElement("div");
     root.id = "board";
-
     root.style.padding = "20px";
     root.style.border = "2px solid black";
     root.style.margin = "auto"
-    root.style.width = "500px";
+    //root.style.width = "500px";
 
-    for (let i = 0; i < 20; i++) {
-        for (let j = 0; j < 20; j++) {
+    var size;
+    var mines;
+
+    if ($("#playArea").difficulty == "easy"){
+        // console.log("build easy")
+        size = 9;
+        mines = 10;
+    }
+    else if ($("#playArea").difficulty == "medium"){
+        // console.log("build med")
+        size = 16;
+        mines = 40;
+    }
+    else {
+        // console.log("build hard")
+        size = 22;
+        mines = 99;
+    }
+
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
             const node = document.createElement("button");
             node.textContent = "⯀";
             
@@ -58,8 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     medium.id = "medium";
     hard.id = "hard";
 
-    easy.addEventListener("click", createBoard)
-
     easy.addEventListener("click", hideButtons)
     medium.addEventListener("click", hideButtons)
     hard.addEventListener("click", hideButtons)
@@ -67,6 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
     easy.addEventListener("click", setDifficulty)
     medium.addEventListener("click", setDifficulty)
     hard.addEventListener("click", setDifficulty)
+
+    easy.addEventListener("click", createBoard)
+    medium.addEventListener("click", createBoard)
+    hard.addEventListener("click", createBoard)
 
     playArea.appendChild(easy);
     playArea.appendChild(medium);
