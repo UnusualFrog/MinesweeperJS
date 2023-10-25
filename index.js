@@ -25,6 +25,9 @@ const getRandomHiddenValue = () => {
     let result;
     if ($("#playArea").mines > 0){
         result = potentialValues[Math.floor(Math.random() * potentialValues.length)];
+        if (result == -1){
+            $("#playArea").mines -= 1;  
+        }
     }
     else {
         result = potentialValuesNoMine[Math.floor(Math.random() * potentialValuesNoMine.length)];
