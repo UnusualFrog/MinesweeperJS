@@ -50,8 +50,19 @@ const hideButtons = () => {
     $("#hard").hidden = true;
 };
 
+const showButtons = () => {
+    $("#easy").hidden = false;
+    $("#medium").hidden = false;
+    $("#hard").hidden = false;
+};
+
 const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
+};
+
+const resetPage = () => {
+    showButtons();
+    $("#board").remove();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -65,18 +76,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let easy = document.createElement("button");
     let medium = document.createElement("button");
     let hard = document.createElement("button");
+    let reset = document.createElement("button");
 
     easy.textContent = "Beginner";
     medium.textContent = "Intermediate";
     hard.textContent = "Expert";
+    reset.textContent = "Reset";
 
     easy.id = "easy";
     medium.id = "medium";
     hard.id = "hard";
+    reset.id = "reset";
+
+    easy.classList = "menu";
+    medium.classList = "menu";
+    hard.classList = "menu";
+    reset.classList = "menu";
 
     easy.addEventListener("click", hideButtons)
     medium.addEventListener("click", hideButtons)
     hard.addEventListener("click", hideButtons)
+    reset.addEventListener("click", resetPage)
 
     easy.addEventListener("click", setDifficulty)
     medium.addEventListener("click", setDifficulty)
@@ -89,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     playArea.appendChild(easy);
     playArea.appendChild(medium);
     playArea.appendChild(hard);
+    playArea.appendChild(reset);
 
     $("main").appendChild(playArea);
 });

@@ -24,3 +24,7 @@ input {
 span {
     color: red;
 }
+
+.menu {
+    margin: 0px 15px;
+}
