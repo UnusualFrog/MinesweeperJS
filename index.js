@@ -1,30 +1,29 @@
 const $ = selector => document.querySelector(selector);
 
 const createBoard = () => {
+    if ($("#playArea").difficulty == "easy"){
+        size = 9;
+        mines = 10;
+        width = "225px"
+    }
+    else if ($("#playArea").difficulty == "medium"){
+        size = 16;
+        mines = 40;
+        width = "400px"
+    }
+    else {
+        size = 22;
+        mines = 99;
+        width = "1650px"
+    }
     let root = document.createElement("div");
     root.id = "board";
     root.style.padding = "20px";
-    root.style.border = "2px solid black";
     root.style.margin = "auto"  
+    root.style.width = width;
 
     var size;
     var mines;
-
-    if ($("#playArea").difficulty == "easy"){
-        // console.log("build easy")
-        size = 9;
-        mines = 10;
-    }
-    else if ($("#playArea").difficulty == "medium"){
-        // console.log("build med")
-        size = 16;
-        mines = 40;
-    }
-    else {
-        // console.log("build hard")
-        size = 22;
-        mines = 99;
-    }
 
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
