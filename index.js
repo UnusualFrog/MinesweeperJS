@@ -18,12 +18,28 @@ const showButtons = () => {
     $("#reset").hidden = true;
 };
 
+const getRandomHiddenValue = () => {
+    const potentialValues = [0,1,2,3,-1];
+    const potentialValuesNoMine = [0,1,2,3];
+
+    let result;
+    if ($("#playArea").mines > 0){
+        result = potentialValues[Math.floor(Math.random() * potentialValues.length)];
+    }
+    else {
+        result = potentialValuesNoMine[Math.floor(Math.random() * potentialValuesNoMine.length)];
+    }
+    return result;
+};
+
 const resetPage = () => {
     showButtons();
     $("#board").remove();
 };
 
 const createBoard = () => {
+    var size;
+    var mines;
     if ($("#playArea").difficulty == "easy"){
         size = 9;
         mines = 10;
@@ -39,27 +55,30 @@ const createBoard = () => {
         mines = 99;
         width = "1650px"
     }
+    $("#playArea").mines = mines;
+
     let root = document.createElement("div");
     root.id = "board";
     root.style.padding = "20px";
     root.style.margin = "auto"  
     root.style.width = width;
 
-    var size;
-    var mines;
+    
 
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
             const node = document.createElement("button");
-            node.textContent = "⯀";
+            //node.textContent = "⯀";
             
             node.style.backgroundColor = "#CCCCCC";
-            node.style.color = "#CCCCCC";
+            //node.style.color = "#CCCCCC";
+            node.style.color = "Black";
             node.style.fontFamily = 'Courier New, monospace';
             node.style.width = "25px";
             node.style.height = "25px";
 
-            //node.hiddenValue = getRandomHiddenValue();
+            console.log(getRandomHiddenValue());
+            node.textContent = getRandomHiddenValue();
 
             root.appendChild(node);
         }
@@ -67,7 +86,6 @@ const createBoard = () => {
         root.appendChild(document.createElement("br"));
     }
     $("#playArea").appendChild(root);
-    console.log($("#playArea").difficulty);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
