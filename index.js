@@ -1,6 +1,6 @@
 const $ = selector => document.querySelector(selector);
 
-const createBoard = (difficulty) => {
+const createBoard = () => {
     let root = document.createElement("div");
     root.id = "board";
 
@@ -25,12 +25,17 @@ const createBoard = (difficulty) => {
         root.appendChild(document.createElement("br"));
     }
     $("#playArea").appendChild(root);
+    console.log($("#playArea").difficulty);
 };
 
 const hideButtons = () => {
-    $("#Beginner").hidden = true;
-    $("#Intermediate").hidden = true;
-    $("#Expert").hidden = true;
+    $("#easy").hidden = true;
+    $("#medium").hidden = true;
+    $("#hard").hidden = true;
+};
+
+const setDifficulty = (evt) => {
+    playArea.difficulty = evt.target.id;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -49,15 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
     medium.textContent = "Intermediate";
     hard.textContent = "Expert";
 
-    easy.id = "Beginner";
-    medium.id = "Intermediate";
-    hard.id = "Expert";
+    easy.id = "easy";
+    medium.id = "medium";
+    hard.id = "hard";
 
     easy.addEventListener("click", createBoard)
 
     easy.addEventListener("click", hideButtons)
     medium.addEventListener("click", hideButtons)
     hard.addEventListener("click", hideButtons)
+
+    easy.addEventListener("click", setDifficulty)
+    medium.addEventListener("click", setDifficulty)
+    hard.addEventListener("click", setDifficulty)
 
     playArea.appendChild(easy);
     playArea.appendChild(medium);
