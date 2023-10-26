@@ -4,6 +4,11 @@ const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
 };
 
+const resetPage = () => {
+    showButtons();
+    $("#board").remove();
+};
+
 const hideButtons = () => {
     $("#easy").hidden = true;
     $("#medium").hidden = true;
@@ -35,10 +40,18 @@ const getRandomHiddenValue = () => {
     return result;
 };
 
-const resetPage = () => {
-    showButtons();
-    $("#board").remove();
-};
+const generateRandomBoardValues = () => {
+    let startBoard = [];
+    for(let i = 0; i< $("#playArea").mines;i++){
+        startBoard.push(-1);
+    }
+
+    while (startBoard.length < $("#playArea").size * $("#playArea").size){
+        startBoard.push(Math.floor(Math.random() * 3))
+    }
+
+    return startBoard;
+}
 
 const createBoard = () => {
     var size;
@@ -59,6 +72,7 @@ const createBoard = () => {
         width = "1650px"
     }
     $("#playArea").mines = mines;
+    $("#playArea").size = size;
 
     let root = document.createElement("div");
     root.id = "board";
@@ -80,8 +94,8 @@ const createBoard = () => {
             node.style.width = "25px";
             node.style.height = "25px";
 
-            console.log(getRandomHiddenValue());
-            node.textContent = getRandomHiddenValue();
+            //console.log(getRandomHiddenValue());
+            // node.textContent = getRandomHiddenValue();
 
             root.appendChild(node);
         }
@@ -89,6 +103,8 @@ const createBoard = () => {
         root.appendChild(document.createElement("br"));
     }
     $("#playArea").appendChild(root);
+    let test = generateRandomBoardValues();
+    console.log(...test);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
