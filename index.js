@@ -51,25 +51,29 @@ const generateRandomBoardValues = () => {
     }
     console.log(...startBoard);
 
-    let unsorted2Dboard = [];
+    startBoard.sort(() => Math.random() - 0.5)
+    console.log(...startBoard);
+
+    let sorted2Dboard = [];
     let tempRow = [];
     for (let i = 0;i <= startBoard.length;i++){
         tempRow.push(startBoard[i]);
         if (i != 0 && i % $("#playArea").size == 0){
-            unsorted2Dboard.push(tempRow);
+            sorted2Dboard.push(tempRow);
             tempRow = [];
         }
     }
-    let tenthProblem = unsorted2Dboard[0].pop();
-    unsorted2Dboard[unsorted2Dboard.length-1][unsorted2Dboard.length-1] = tenthProblem;
-    console.log(...unsorted2Dboard);
+    let tenthProblem = sorted2Dboard[0].pop();
+    sorted2Dboard[sorted2Dboard.length-1][sorted2Dboard.length-1] = tenthProblem;
+    console.log(...sorted2Dboard);
 
-    return startBoard;
+    return sorted2Dboard;
 }
 
 const createBoard = () => {
     var size;
     var mines;
+    var width;
     if ($("#playArea").difficulty == "easy"){
         size = 9;
         mines = 10;
@@ -95,7 +99,7 @@ const createBoard = () => {
     root.style.width = width;
 
     
-
+    let buttonValues = generateRandomBoardValues();
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
             const node = document.createElement("button");
@@ -108,7 +112,7 @@ const createBoard = () => {
             node.style.width = "25px";
             node.style.height = "25px";
 
-            //console.log(getRandomHiddenValue());
+            node.textContent = buttonValues[i][j];
             // node.textContent = getRandomHiddenValue();
 
             root.appendChild(node);
