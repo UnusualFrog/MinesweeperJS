@@ -1,21 +1,25 @@
 const $ = selector => document.querySelector(selector);
 
+// Sets difficulty based on the button chosen for use in later generation
 const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
 };
 
+//Resets the page to its starting layout to start a new game
 const resetPage = () => {
     showButtons();
     $("#board").remove();
 };
 
-const hideButtons = () => {
+//Hides buttons associated with choosing difficulty and shows the reset button
+const hideDifficultyButtons = () => {
     $("#easy").hidden = true;
     $("#medium").hidden = true;
     $("#hard").hidden = true;
     $("#reset").hidden = false;
 };
 
+//Hides the reset button and shows buttons associated with choosing difficulty 
 const showButtons = () => {
     $("#easy").hidden = false;
     $("#medium").hidden = false;
@@ -23,7 +27,29 @@ const showButtons = () => {
     $("#reset").hidden = true;
 };
 
+/*
+Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
+## GENERATING VALUES
+Starts with a 1D array filled with (-1)s to represent mines
+Then randomly generates a values between 0-3 to match the remaining button tiles
+## SORTING
+The array is then sorted based on random criteria
+For each 2 values being compared, a random number is generated between 0 and 1
+0.5 is then subtracted from the random number, creating an effective random range of -0.5 to 0.5
+Sort order is then determined based on the built-in compareFn(a,b)
+if the random number is postive, sort the first value after the second value (b,a)
+if the number is negative, sort the second after the first (a,b)
+if the number is 0, maintain the original sort order
+## CONVERT TO 2D ARRAY
+the sorted 1D array is then converted to 2D
+loop through board length
+add values to temporary row
+when i equals the length of 1 row, push the row to the sorted array and clear the temp row
+due to starting on 0, the first row will have an extra value and the last row will end with undefined
+to fix, pop the extra value and set undefined to it's value 
+*/
 const generateRandomBoardValues = () => {
+    //Generate Values
     let startBoard = [];
     for(let i = 0; i< $("#playArea").mines;i++){
         startBoard.push(-1);
@@ -34,9 +60,11 @@ const generateRandomBoardValues = () => {
     }
     console.log(...startBoard);
 
+    //Sort
     startBoard.sort(() => Math.random() - 0.5)
     console.log(...startBoard);
 
+    //Convert to 2D
     let sorted2Dboard = [];
     let tempRow = [];
     for (let i = 0;i <= startBoard.length;i++){
@@ -46,6 +74,7 @@ const generateRandomBoardValues = () => {
             tempRow = [];
         }
     }
+    //Fix 0 based index issue
     let tenthProblem = sorted2Dboard[0].pop();
     sorted2Dboard[sorted2Dboard.length-1][sorted2Dboard.length-1] = tenthProblem;
     console.log(...sorted2Dboard);
@@ -53,106 +82,121 @@ const generateRandomBoardValues = () => {
     return sorted2Dboard;
 }
 
+//Build game elements based on the difficulty chosen
 const createBoard = () => {
-    var size;
+    //Set variables based on difficulty
+    var gridSize;
     var mines;
-    var width;
+    var buttonGridWidth;
     if ($("#playArea").difficulty == "easy"){
-        size = 9;
+        gridSize = 9;
         mines = 10;
-        width = "225px"
+        buttonGridWidth = "225px"
     }
     else if ($("#playArea").difficulty == "medium"){
-        size = 16;
+        gridSize = 16;
         mines = 40;
-        width = "400px"
+        buttonGridWidth = "400px"
     }
     else {
-        size = 22;
+        gridSize = 22;
         mines = 99;
-        width = "1650px"
+        buttonGridWidth = "1650px"
     }
     $("#playArea").mines = mines;
-    $("#playArea").size = size;
+    $("#playArea").size = gridSize;
 
-    let root = document.createElement("div");
-    root.id = "board";
-    root.style.padding = "20px";
-    root.style.margin = "auto"  
-    root.style.width = width;
+    //Generate an area to contain the button grid
+    let buttonGrid = document.createElement("div");
+    buttonGrid.id = "board";
+    buttonGrid.style.padding = "20px";
+    buttonGrid.style.margin = "auto"  
+    buttonGrid.style.width = buttonGridWidth;
 
-    
+    //Generate the values for buttons to be set to
     let buttonValues = generateRandomBoardValues();
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            const node = document.createElement("button");
+    //Generate the button grid and set their values
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            const currentButton = document.createElement("button");
             //node.textContent = "⯀";
             
-            node.style.backgroundColor = "#CCCCCC";
+            currentButton.style.backgroundColor = "#CCCCCC";
             //node.style.color = "#CCCCCC";
-            node.style.color = "Black";
-            node.style.fontFamily = 'Courier New, monospace';
-            node.style.width = "25px";
-            node.style.height = "25px";
+            currentButton.style.color = "Black";
+            currentButton.style.fontFamily = 'Courier New, monospace';
+            currentButton.style.width = "25px";
+            currentButton.style.height = "25px";
 
-            node.textContent = buttonValues[i][j];
+            currentButton.textContent = buttonValues[i][j];
 
-            root.appendChild(node);
+            buttonGrid.appendChild(currentButton);
         }
         // create and append a br element to break the lines.
-        root.appendChild(document.createElement("br"));
+        buttonGrid.appendChild(document.createElement("br"));
     }
-    $("#playArea").appendChild(root);
-    generateRandomBoardValues();
+    //Append the game board containing the button grid to the play area div
+    $("#playArea").appendChild(buttonGrid);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    //Build title
     let title = document.createElement("h1");
+    title.style.textAlign = "center"
     title.textContent = "Welcome to Minesweeper"
     $("main").appendChild(title); 
 
+    //Build area for game elements
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
-    let easy = document.createElement("button");
-    let medium = document.createElement("button");
-    let hard = document.createElement("button");
-    let reset = document.createElement("button");
+    //Build buttons for setting difficulty and reseting the game
+    let easyButton = document.createElement("button");
+    let mediumButton = document.createElement("button");
+    let hardButton = document.createElement("button");
+    let resetButton = document.createElement("button");
 
-    easy.textContent = "Beginner";
-    medium.textContent = "Intermediate";
-    hard.textContent = "Expert";
-    reset.textContent = "Reset";
+    easyButton.textContent = "Beginner";
+    mediumButton.textContent = "Intermediate";
+    hardButton.textContent = "Expert";
+    resetButton.textContent = "Reset";
 
-    easy.id = "easy";
-    medium.id = "medium";
-    hard.id = "hard";
-    reset.id = "reset";
+    easyButton.id = "easy";
+    mediumButton.id = "medium";
+    hardButton.id = "hard";
+    resetButton.id = "reset";
 
-    easy.classList = "menu";
-    medium.classList = "menu";
-    hard.classList = "menu";
-    reset.classList = "menu";
+    //Set to menu to differentitate from buttonGrid buttons
+    easyButton.classList = "menu";
+    mediumButton.classList = "menu";
+    hardButton.classList = "menu";
+    resetButton.classList = "menu";
     
-    reset.hidden = true;
+    //Hide the reset button until a difficulty is chosen
+    resetButton.hidden = true;
+    resetButton.addEventListener("click", resetPage)
 
-    easy.addEventListener("click", hideButtons)
-    medium.addEventListener("click", hideButtons)
-    hard.addEventListener("click", hideButtons)
-    reset.addEventListener("click", resetPage)
+    //Hide all difficulty buttons when one is picked
+    easyButton.addEventListener("click", hideDifficultyButtons)
+    mediumButton.addEventListener("click", hideDifficultyButtons)
+    hardButton.addEventListener("click", hideDifficultyButtons)
 
-    easy.addEventListener("click", setDifficulty)
-    medium.addEventListener("click", setDifficulty)
-    hard.addEventListener("click", setDifficulty)
+    //Set difficulty value for later generation
+    easyButton.addEventListener("click", setDifficulty)
+    mediumButton.addEventListener("click", setDifficulty)
+    hardButton.addEventListener("click", setDifficulty)
 
-    easy.addEventListener("click", createBoard)
-    medium.addEventListener("click", createBoard)
-    hard.addEventListener("click", createBoard)
+    //Build the game board when a difficulty is chosen
+    easyButton.addEventListener("click", createBoard)
+    mediumButton.addEventListener("click", createBoard)
+    hardButton.addEventListener("click", createBoard)
 
-    playArea.appendChild(easy);
-    playArea.appendChild(medium);
-    playArea.appendChild(hard);
-    playArea.appendChild(reset);
+    //Add the buttons to the play area
+    playArea.appendChild(easyButton);
+    playArea.appendChild(mediumButton);
+    playArea.appendChild(hardButton);
+    playArea.appendChild(resetButton);
 
+    //Add the play area to the main section of the page
     $("main").appendChild(playArea);
 });
