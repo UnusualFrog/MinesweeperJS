@@ -44,9 +44,9 @@ if the number is 0, maintain the original sort order
 the sorted 1D array is then converted to 2D
 loop through board length
 add values to temporary row
-when i equals the length of 1 row, push the row to the sorted array and clear the temp row
-due to starting on 0, the first row will have an extra value and the last row will end with undefined
-to fix, pop the extra value and set undefined to it's value 
+when i is divisible by the length of 1 row, push the row to the sorted array and clear the temp row
+due to 0 based indexing, the first value of the first row will be skipped and the last value of the last row will be undefined
+to fix, set the last value of the last row 
 */
 const generateRandomBoardValues = () => {
     //Generate Values
@@ -58,16 +58,16 @@ const generateRandomBoardValues = () => {
     while (startBoard.length < $("#playArea").size * $("#playArea").size){
         startBoard.push(Math.floor(Math.random() * 4))
     }
-    console.log(...startBoard);
+    //console.log(...startBoard);
 
     //Sort
     startBoard.sort(() => Math.random() - 0.5)
-    console.log(...startBoard);
+    //console.log(...startBoard);
 
     //Convert to 2D
     let sorted2Dboard = [];
     let tempRow = [];
-    for (let i = 0;i <= startBoard.length;i++){
+    for (let i = 1;i <= startBoard.length+1;i++){
         tempRow.push(startBoard[i]);
         if (i != 0 && i % $("#playArea").size == 0){
             sorted2Dboard.push(tempRow);
@@ -75,9 +75,8 @@ const generateRandomBoardValues = () => {
         }
     }
     //Fix 0 based index issue
-    let tenthProblem = sorted2Dboard[0].pop();
-    sorted2Dboard[sorted2Dboard.length-1][sorted2Dboard.length-1] = tenthProblem;
-    console.log(...sorted2Dboard);
+    sorted2Dboard[sorted2Dboard.length-1][sorted2Dboard.length-1] = startBoard[0];
+    //console.log(...sorted2Dboard);
 
     return sorted2Dboard;
 }
