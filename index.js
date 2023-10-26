@@ -23,23 +23,6 @@ const showButtons = () => {
     $("#reset").hidden = true;
 };
 
-const getRandomHiddenValue = () => {
-    const potentialValues = [0,1,2,3,-1];
-    const potentialValuesNoMine = [0,1,2,3];
-
-    let result;
-    if ($("#playArea").mines > 0){
-        result = potentialValues[Math.floor(Math.random() * potentialValues.length)];
-        if (result == -1){
-            $("#playArea").mines -= 1;  
-        }
-    }
-    else {
-        result = potentialValuesNoMine[Math.floor(Math.random() * potentialValuesNoMine.length)];
-    }
-    return result;
-};
-
 const generateRandomBoardValues = () => {
     let startBoard = [];
     for(let i = 0; i< $("#playArea").mines;i++){
@@ -113,7 +96,6 @@ const createBoard = () => {
             node.style.height = "25px";
 
             node.textContent = buttonValues[i][j];
-            // node.textContent = getRandomHiddenValue();
 
             root.appendChild(node);
         }
