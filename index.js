@@ -117,17 +117,22 @@ const createBoard = () => {
     //Generate the button grid and set their values
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
+            //Set button data
             const currentButton = document.createElement("button");
-            //node.textContent = "⯀";
+            currentButton.id = j + "/" + + i
+            currentButton.classList = "gridButton";
+            currentButton.x = j;
+            currentButton.y = i;
+            currentButton.textContent = buttonValues[i][j];
+            // currentButton.textContent = "⯀";
             
+            //Style the button
             currentButton.style.backgroundColor = "#CCCCCC";
-            //node.style.color = "#CCCCCC";
+            //currentButton.style.color = "#CCCCCC";
             currentButton.style.color = "Black";
             currentButton.style.fontFamily = 'Courier New, monospace';
             currentButton.style.width = "25px";
             currentButton.style.height = "25px";
-
-            currentButton.textContent = buttonValues[i][j];
 
             buttonGrid.appendChild(currentButton);
         }
