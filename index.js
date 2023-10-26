@@ -47,8 +47,22 @@ const generateRandomBoardValues = () => {
     }
 
     while (startBoard.length < $("#playArea").size * $("#playArea").size){
-        startBoard.push(Math.floor(Math.random() * 3))
+        startBoard.push(Math.floor(Math.random() * 4))
     }
+    console.log(...startBoard);
+
+    let unsorted2Dboard = [];
+    let tempRow = [];
+    for (let i = 0;i <= startBoard.length;i++){
+        tempRow.push(startBoard[i]);
+        if (i != 0 && i % $("#playArea").size == 0){
+            unsorted2Dboard.push(tempRow);
+            tempRow = [];
+        }
+    }
+    let tenthProblem = unsorted2Dboard[0].pop();
+    unsorted2Dboard[unsorted2Dboard.length-1][unsorted2Dboard.length-1] = tenthProblem;
+    console.log(...unsorted2Dboard);
 
     return startBoard;
 }
@@ -103,8 +117,7 @@ const createBoard = () => {
         root.appendChild(document.createElement("br"));
     }
     $("#playArea").appendChild(root);
-    let test = generateRandomBoardValues();
-    console.log(...test);
+    generateRandomBoardValues();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
