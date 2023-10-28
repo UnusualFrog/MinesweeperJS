@@ -5,6 +5,19 @@ const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
 };
 
+//Increments counter the first time a grid button is clicked
+const incrementCounter = (evt) => {
+    if (evt.target.isClicked == "false"){
+        evt.target.isClicked = "true";
+    $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
+    };
+}
+
+//Resets the counter varibable for a new game
+const resetCounter = () => {
+    $("#counter").textContent = "000";
+}
+
 //Resets the page to its starting layout to start a new game
 const resetPage = () => {
     showButtons();
@@ -31,7 +44,7 @@ const showButtons = () => {
 Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
 ## GENERATING VALUES
 Starts with a 1D array filled with (-1)s to represent mines
-Then randomly generates a values between 0-3 to match the remaining button tiles
+Then fill the remaining button tiles with 0s
 ## SORTING
 The array is then sorted based on random criteria
 For each 2 values being compared, a random number is generated between 0 and 1
@@ -51,12 +64,12 @@ to fix, set the last value of the last row
 const generateRandomBoardValues = () => {
     //Generate Values
     let startBoard = [];
-    for(let i = 0; i< $("#playArea").mines;i++){
+    for (let i = 0; i < $("#playArea").mines; i++) {
         startBoard.push(-1);
     }
 
-    while (startBoard.length < $("#playArea").size * $("#playArea").size){
-        startBoard.push(Math.floor(Math.random() * 4))
+    while (startBoard.length < $("#playArea").size * $("#playArea").size) {
+        startBoard.push(0)
     }
     //console.log(...startBoard);
 
@@ -67,15 +80,15 @@ const generateRandomBoardValues = () => {
     //Convert to 2D
     let sorted2Dboard = [];
     let tempRow = [];
-    for (let i = 1;i <= startBoard.length+1;i++){
+    for (let i = 1; i <= startBoard.length + 1; i++) {
         tempRow.push(startBoard[i]);
-        if (i != 0 && i % $("#playArea").size == 0){
+        if (i != 0 && i % $("#playArea").size == 0) {
             sorted2Dboard.push(tempRow);
             tempRow = [];
         }
     }
     //Fix 0 based index issue
-    sorted2Dboard[sorted2Dboard.length-1][sorted2Dboard.length-1] = startBoard[0];
+    sorted2Dboard[sorted2Dboard.length - 1][sorted2Dboard.length - 1] = startBoard[0];
     //console.log(...sorted2Dboard);
 
     return sorted2Dboard;
@@ -87,12 +100,12 @@ const createBoard = () => {
     var gridSize;
     var mines;
     var buttonGridWidth;
-    if ($("#playArea").difficulty == "easy"){
+    if ($("#playArea").difficulty == "easy") {
         gridSize = 9;
         mines = 10;
         buttonGridWidth = "225px"
     }
-    else if ($("#playArea").difficulty == "medium"){
+    else if ($("#playArea").difficulty == "medium") {
         gridSize = 16;
         mines = 40;
         buttonGridWidth = "400px"
@@ -109,7 +122,7 @@ const createBoard = () => {
     let buttonGrid = document.createElement("div");
     buttonGrid.id = "board";
     buttonGrid.style.padding = "20px";
-    buttonGrid.style.margin = "auto"  
+    buttonGrid.style.margin = "auto"
     buttonGrid.style.width = buttonGridWidth;
 
     //Generate the values for buttons to be set to
@@ -124,8 +137,10 @@ const createBoard = () => {
             currentButton.x = j;
             currentButton.y = i;
             currentButton.textContent = buttonValues[i][j];
+            currentButton.isClicked = "false";
+            currentButton.addEventListener("click", incrementCounter);
             // currentButton.textContent = "⯀";
-            
+
             //Style the button
             currentButton.style.backgroundColor = "#CCCCCC";
             //currentButton.style.color = "#CCCCCC";
@@ -148,11 +163,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let title = document.createElement("h1");
     title.style.textAlign = "center"
     title.textContent = "Welcome to Minesweeper"
-    $("main").appendChild(title); 
+    $("main").appendChild(title);
 
     //Build area for game elements
     let playArea = document.createElement("div");
     playArea.id = "playArea";
+
+    //Build area for menu elements
+    let menuArea = document.createElement("div");
+    menuArea.id = "menuArea";
+    menuArea.style.width = "100%"
+    menuArea.style.paddingBottom = "4px";
+    menuArea.style.borderBottom = "2px solid grey";
 
     //Build buttons for setting difficulty and reseting the game
     let easyButton = document.createElement("button");
@@ -175,32 +197,53 @@ document.addEventListener("DOMContentLoaded", () => {
     mediumButton.classList = "menu";
     hardButton.classList = "menu";
     resetButton.classList = "menu";
-    
+
     //Hide the reset button until a difficulty is chosen
     resetButton.hidden = true;
-    resetButton.addEventListener("click", resetPage)
+    resetButton.addEventListener("click", resetPage);
+    resetButton.addEventListener("click", resetCounter);
 
     //Hide all difficulty buttons when one is picked
-    easyButton.addEventListener("click", hideDifficultyButtons)
-    mediumButton.addEventListener("click", hideDifficultyButtons)
-    hardButton.addEventListener("click", hideDifficultyButtons)
+    easyButton.addEventListener("click", hideDifficultyButtons);
+    mediumButton.addEventListener("click", hideDifficultyButtons);
+    hardButton.addEventListener("click", hideDifficultyButtons);
 
     //Set difficulty value for later generation
-    easyButton.addEventListener("click", setDifficulty)
-    mediumButton.addEventListener("click", setDifficulty)
-    hardButton.addEventListener("click", setDifficulty)
+    easyButton.addEventListener("click", setDifficulty);
+    mediumButton.addEventListener("click", setDifficulty);
+    hardButton.addEventListener("click", setDifficulty);
 
     //Build the game board when a difficulty is chosen
-    easyButton.addEventListener("click", createBoard)
-    mediumButton.addEventListener("click", createBoard)
-    hardButton.addEventListener("click", createBoard)
+    easyButton.addEventListener("click", createBoard);
+    mediumButton.addEventListener("click", createBoard);
+    hardButton.addEventListener("click", createBoard);
+
+    //Build the counter and timer elements
+    let timer = document.createElement("h3");
+    let counter = document.createElement("h3");
+    timer.id = "timer";
+    counter.id = "counter";
+    timer.textContent = "000";
+    counter.textContent = "000";
+    counter.style.display = "inline";
+    timer.style.display = "inline";
+    counter.style.color = "red";
+    timer.style.color = "red";
+    counter.style.backgroundColor = "black";
+    timer.style.backgroundColor = "black";
+
+    //Center elements within playarea
+    menuArea.style.textAlign = "center";
 
     //Add the buttons to the play area
-    playArea.appendChild(easyButton);
-    playArea.appendChild(mediumButton);
-    playArea.appendChild(hardButton);
-    playArea.appendChild(resetButton);
+    menuArea.appendChild(counter);
+    menuArea.appendChild(easyButton);
+    menuArea.appendChild(mediumButton);
+    menuArea.appendChild(hardButton);
+    menuArea.appendChild(resetButton);
+    menuArea.appendChild(timer);
 
-    //Add the play area to the main section of the page
+    //Add the play and menu areas to the main section of the page
+    $("main").appendChild(menuArea)
     $("main").appendChild(playArea);
 });
