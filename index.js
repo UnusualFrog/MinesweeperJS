@@ -18,6 +18,23 @@ const resetCounter = () => {
     $("#counter").textContent = "000";
 }
 
+//Starts the time when a new game is selected
+const startTimer = () => {
+    timerInterval = setInterval(incrementTimer, 1000);
+};
+
+//Increments the timer while a new game is running
+const incrementTimer = () => {
+    $("#timer").textContent = ('000' + (parseInt($("#timer").textContent) + 1)).slice(-3);
+};
+
+//Resets the timer for a new game when reset it clicked
+const resetTimer = () => {
+    $("#timer").textContent = "000";
+    clearInterval(timerInterval);
+};
+
+
 //Resets the page to its starting layout to start a new game
 const resetPage = () => {
     showButtons();
@@ -202,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetButton.hidden = true;
     resetButton.addEventListener("click", resetPage);
     resetButton.addEventListener("click", resetCounter);
+    resetButton.addEventListener("click", resetTimer);
 
     //Hide all difficulty buttons when one is picked
     easyButton.addEventListener("click", hideDifficultyButtons);
@@ -231,6 +249,12 @@ document.addEventListener("DOMContentLoaded", () => {
     timer.style.color = "red";
     counter.style.backgroundColor = "black";
     timer.style.backgroundColor = "black";
+    var timerInterval;
+
+    //Start the timer
+    easyButton.addEventListener("click", startTimer);
+    mediumButton.addEventListener("click", startTimer);
+    hardButton.addEventListener("click", startTimer);
 
     //Center elements within playarea
     menuArea.style.textAlign = "center";
