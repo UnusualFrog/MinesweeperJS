@@ -57,11 +57,99 @@ const showButtons = () => {
     $("#reset").hidden = true;
 };
 
+// Generates starting values for board
+// Starts with a 1D array filled with (-1)s to represent mines
+// Then fill the remaining button tiles with 0s
+const generateStartBoardValues = () => {
+    board = [];
+    for (let i = 0; i < $("#playArea").mines; i++) {
+        board.push(-1);
+    }
+
+    while (board.length < $("#playArea").size * $("#playArea").size) {
+        board.push(0)
+    }
+    return board;
+};
+
+// Converts 1D array to 2D based on sidelength of the grid
+// loop through board length
+// add values to temporary row
+// when i is divisible by the length of 1 row, push the row to the sorted array and clear the temp row
+// due to 0 based indexing, the first value of the first row will be skipped and the last value of the last row will be undefined
+// to fix, set the last value of the last row 
+const convertTo2DArray = (board) => {
+    let new2Dboard = [];
+    let tempRow = [];
+    for (let i = 1; i <= board.length + 1; i++) {
+        tempRow.push(board[i]);
+        if (i != 0 && i % $("#playArea").size == 0) {
+            new2Dboard.push(tempRow);
+            tempRow = [];
+        }
+    }
+    //Fix 0 based index issue
+    new2Dboard[new2Dboard.length - 1][new2Dboard.length - 1] = board[0];
+    console.log(...new2Dboard);
+
+    return new2Dboard;
+};
+
+//Increment the value of tiles adjacent to mines
+const incrementAdjacentMineTiles = (board) => {
+    for (let i = 0 ; i < board.length;i++){
+        for (let j = 0; j < board[0].length;j++){
+            //Non edge-case
+            if (board[i][j] == -1  && i != 0 && j != 0 && i != board.length-1 && j != board[0].length-1){
+                console.log("-".repeat(30));
+                console.log("above"," : ",board[i-1][j-1], board[i-1][j], board[i-1][j+1]);
+                console.log(i,j,"c  : ",board[i][j-1], board[i][j], board[i][j+1]);
+                console.log("below"," : ",board[i+1][j-1], board[i+1][j], board[i+1][j+1]);
+                console.log("-".repeat(30));
+                
+                //top
+                if (board[i-1][j-1] != -1) {
+                    board[i-1][j-1] += 1;
+                }
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+                if (board[i-1][j+1] != -1) {
+                    board[i-1][j+1] += 1;
+                }
+
+                //mid
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
+                }
+                
+
+                //bottom
+                if (board[i+1][j-1] != -1) {
+                    board[i+1][j-1] += 1;
+                }
+                
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
+                
+                if (board[i+1][j+1] != -1) {
+                    board[i+1][j+1] += 1;
+                }
+            }
+            
+        }
+    }
+
+
+    return board;
+};
+
 /*
 Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
-## GENERATING VALUES
-Starts with a 1D array filled with (-1)s to represent mines
-Then fill the remaining button tiles with 0s
 ## SORTING
 The array is then sorted based on random criteria
 For each 2 values being compared, a random number is generated between 0 and 1
@@ -70,24 +158,10 @@ Sort order is then determined based on the built-in compareFn(a,b)
 if the random number is postive, sort the first value after the second value (b,a)
 if the number is negative, sort the second after the first (a,b)
 if the number is 0, maintain the original sort order
-## CONVERT TO 2D ARRAY
-the sorted 1D array is then converted to 2D
-loop through board length
-add values to temporary row
-when i is divisible by the length of 1 row, push the row to the sorted array and clear the temp row
-due to 0 based indexing, the first value of the first row will be skipped and the last value of the last row will be undefined
-to fix, set the last value of the last row 
 */
 const generateRandomBoardValues = () => {
     //Generate Values
-    let startBoard = [];
-    for (let i = 0; i < $("#playArea").mines; i++) {
-        startBoard.push(-1);
-    }
-
-    while (startBoard.length < $("#playArea").size * $("#playArea").size) {
-        startBoard.push(0)
-    }
+    let startBoard = generateStartBoardValues();
     //console.log(...startBoard);
 
     //Sort
@@ -95,66 +169,12 @@ const generateRandomBoardValues = () => {
     //console.log(...startBoard);
 
     //Convert to 2D
-    let sorted2Dboard = [];
-    let tempRow = [];
-    for (let i = 1; i <= startBoard.length + 1; i++) {
-        tempRow.push(startBoard[i]);
-        if (i != 0 && i % $("#playArea").size == 0) {
-            sorted2Dboard.push(tempRow);
-            tempRow = [];
-        }
-    }
-    //Fix 0 based index issue
-    sorted2Dboard[sorted2Dboard.length - 1][sorted2Dboard.length - 1] = startBoard[0];
-    console.log(...sorted2Dboard);
+    sorted2Dboard = convertTo2DArray(startBoard);
 
     //Set adjacent mine tile values
-    for (let i = 0 ; i < sorted2Dboard.length;i++){
-        for (let j = 0; j < sorted2Dboard[0].length;j++){
-            if (sorted2Dboard[i][j] == -1  && i != 0 && j != 0 && i != sorted2Dboard.length-1 && j != sorted2Dboard[0].length-1){
-                console.log("-".repeat(30));
-                console.log("above"," : ",sorted2Dboard[i-1][j-1], sorted2Dboard[i-1][j], sorted2Dboard[i-1][j+1]);
-                console.log(i,j,"c  : ",sorted2Dboard[i][j-1], sorted2Dboard[i][j], sorted2Dboard[i][j+1]);
-                console.log("below"," : ",sorted2Dboard[i+1][j-1], sorted2Dboard[i+1][j], sorted2Dboard[i+1][j+1]);
-                console.log("-".repeat(30));
-                
-                //top
-                if (sorted2Dboard[i-1][j-1] != -1) {
-                    sorted2Dboard[i-1][j-1] += 1;
-                }
-                if (sorted2Dboard[i-1][j] != -1) {
-                    sorted2Dboard[i-1][j] += 1;
-                }
-                if (sorted2Dboard[i-1][j+1] != -1) {
-                    sorted2Dboard[i-1][j+1] += 1;
-                }
+    let completedBoard = incrementAdjacentMineTiles(sorted2Dboard);
 
-                //mid
-                if (sorted2Dboard[i][j-1] != -1) {
-                    sorted2Dboard[i][j-1] += 1;
-                }
-                if (sorted2Dboard[i][j+1] != -1) {
-                    sorted2Dboard[i][j+1] += 1;
-                }
-                
-
-                //bottom
-                if (sorted2Dboard[i+1][j-1] != -1) {
-                    sorted2Dboard[i+1][j-1] += 1;
-                }
-                
-                if (sorted2Dboard[i+1][j] != -1) {
-                    sorted2Dboard[i+1][j] += 1;
-                }
-                
-                if (sorted2Dboard[i+1][j+1] != -1) {
-                    sorted2Dboard[i+1][j+1] += 1;
-                }
-            }
-        }
-    }
-
-    return sorted2Dboard;
+    return completedBoard;
 }
 
 //Build game elements based on the difficulty chosen
