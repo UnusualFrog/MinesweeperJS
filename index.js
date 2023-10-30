@@ -100,14 +100,15 @@ const incrementAdjacentMineTiles = (board) => {
     for (let i = 0 ; i < board.length;i++){
         for (let j = 0; j < board[0].length;j++){
             //Non edge-case
-            if (board[i][j] == -1  && i != 0 && j != 0 && i != board.length-1 && j != board[0].length-1){
+            if (board[i][j] == -1 ){
+                if (i != 0 && j != 0 && i != board.length-1 && j != board[0].length-1){
                 console.log("-".repeat(30));
                 console.log("above"," : ",board[i-1][j-1], board[i-1][j], board[i-1][j+1]);
                 console.log(i,j,"c  : ",board[i][j-1], board[i][j], board[i][j+1]);
                 console.log("below"," : ",board[i+1][j-1], board[i+1][j], board[i+1][j+1]);
                 console.log("-".repeat(30));
                 
-                //top
+                //top row
                 if (board[i-1][j-1] != -1) {
                     board[i-1][j-1] += 1;
                 }
@@ -118,7 +119,7 @@ const incrementAdjacentMineTiles = (board) => {
                     board[i-1][j+1] += 1;
                 }
 
-                //mid
+                //mid row
                 if (board[i][j-1] != -1) {
                     board[i][j-1] += 1;
                 }
@@ -126,20 +127,171 @@ const incrementAdjacentMineTiles = (board) => {
                     board[i][j+1] += 1;
                 }
                 
+                //bottom row
+                if (board[i+1][j-1] != -1) {
+                    board[i+1][j-1] += 1;
+                }
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
+                if (board[i+1][j+1] != -1) {
+                    board[i+1][j+1] += 1;
+                }
+            }
+            //top edge
+            else if (i == 0 && j != 0 && i != board.length-1 && j != board[0].length-1){
+                //mid row
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
+                }
+                
+                //bottom row
+                if (board[i+1][j-1] != -1) {
+                    board[i+1][j-1] += 1;
+                }
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
+                if (board[i+1][j+1] != -1) {
+                    board[i+1][j+1] += 1;
+                }
+            }
+            //bottom edge
+            else if (i != 0 && j != 0 && i == board.length-1 && j != board[0].length-1){
+                //top row
+                if (board[i-1][j-1] != -1) {
+                    board[i-1][j-1] += 1;
+                }
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+                if (board[i-1][j+1] != -1) {
+                    board[i-1][j+1] += 1;
+                }
 
-                //bottom
+                //mid row
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
+                }
+            }
+            //left edge
+            else if (i != 0 && j == 0 && i != board.length-1 && j != board[0].length-1){
+                //top row
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+                if (board[i-1][j+1] != -1) {
+                    board[i-1][j+1] += 1;
+                }
+
+                //mid row
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
+                }
+                
+
+                //bottom row
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
+                if (board[i+1][j+1] != -1) {
+                    board[i+1][j+1] += 1;
+                }
+            }
+            //right edge
+            else if (i != 0 && j != 0 && i != board.length-1 && j == board[0].length-1){
+                //top row
+                if (board[i-1][j-1] != -1) {
+                    board[i-1][j-1] += 1;
+                }
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+    
+                //mid row
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+                              
+                //bottom row
                 if (board[i+1][j-1] != -1) {
                     board[i+1][j-1] += 1;
                 }
                 
                 if (board[i+1][j] != -1) {
                     board[i+1][j] += 1;
+                }             
+            }
+            //top left corner
+            else if (i == 0 && j == 0){
+                //mid row
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
                 }
                 
+                //bottom row               
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
                 if (board[i+1][j+1] != -1) {
                     board[i+1][j+1] += 1;
                 }
             }
+            //top right corner
+            else if (i == 0 && j == board[0].length-1) {
+                //mid row
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+                                
+                //bottom row
+                if (board[i+1][j-1] != -1) {
+                    board[i+1][j-1] += 1;
+                }
+                if (board[i+1][j] != -1) {
+                    board[i+1][j] += 1;
+                }
+            }
+            //bottom left corner
+            else if (i == board[0].length-1 && j == 0){
+                //top row
+                if (board[i-1][j-1] != -1) {
+                    board[i-1][j-1] += 1;
+                }
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+                if (board[i-1][j+1] != -1) {
+                    board[i-1][j+1] += 1;
+                }
+
+                //mid row
+                if (board[i][j+1] != -1) {
+                    board[i][j+1] += 1;
+                }
+            }
+            //bottom right corner
+            else if (i == board[0].length-1 && j == board[0].length-1){
+                //top row
+                if (board[i-1][j-1] != -1) {
+                    board[i-1][j-1] += 1;
+                }
+                if (board[i-1][j] != -1) {
+                    board[i-1][j] += 1;
+                }
+
+                //mid row
+                if (board[i][j-1] != -1) {
+                    board[i][j-1] += 1;
+                }
+            }
+        }
             
         }
     }
