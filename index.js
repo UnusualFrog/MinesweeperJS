@@ -106,7 +106,53 @@ const generateRandomBoardValues = () => {
     }
     //Fix 0 based index issue
     sorted2Dboard[sorted2Dboard.length - 1][sorted2Dboard.length - 1] = startBoard[0];
-    //console.log(...sorted2Dboard);
+    console.log(...sorted2Dboard);
+
+    //Set adjacent mine tile values
+    for (let i = 0 ; i < sorted2Dboard.length;i++){
+        for (let j = 0; j < sorted2Dboard[0].length;j++){
+            if (sorted2Dboard[i][j] == -1  && i != 0 && j != 0 && i != sorted2Dboard.length-1 && j != sorted2Dboard[0].length-1){
+                console.log("-".repeat(30));
+                console.log("above"," : ",sorted2Dboard[i-1][j-1], sorted2Dboard[i-1][j], sorted2Dboard[i-1][j+1]);
+                console.log(i,j,"c  : ",sorted2Dboard[i][j-1], sorted2Dboard[i][j], sorted2Dboard[i][j+1]);
+                console.log("below"," : ",sorted2Dboard[i+1][j-1], sorted2Dboard[i+1][j], sorted2Dboard[i+1][j+1]);
+                console.log("-".repeat(30));
+                
+                //top
+                if (sorted2Dboard[i-1][j-1] != -1) {
+                    sorted2Dboard[i-1][j-1] += 1;
+                }
+                if (sorted2Dboard[i-1][j] != -1) {
+                    sorted2Dboard[i-1][j] += 1;
+                }
+                if (sorted2Dboard[i-1][j+1] != -1) {
+                    sorted2Dboard[i-1][j+1] += 1;
+                }
+
+                //mid
+                if (sorted2Dboard[i][j-1] != -1) {
+                    sorted2Dboard[i][j-1] += 1;
+                }
+                if (sorted2Dboard[i][j+1] != -1) {
+                    sorted2Dboard[i][j+1] += 1;
+                }
+                
+
+                //bottom
+                if (sorted2Dboard[i+1][j-1] != -1) {
+                    sorted2Dboard[i+1][j-1] += 1;
+                }
+                
+                if (sorted2Dboard[i+1][j] != -1) {
+                    sorted2Dboard[i+1][j] += 1;
+                }
+                
+                if (sorted2Dboard[i+1][j+1] != -1) {
+                    sorted2Dboard[i+1][j+1] += 1;
+                }
+            }
+        }
+    }
 
     return sorted2Dboard;
 }
