@@ -95,6 +95,35 @@ const convertTo2DArray = (board) => {
     return new2Dboard;
 };
 
+/*
+Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
+## SORTING
+The array is then sorted based on random criteria
+For each 2 values being compared, a random number is generated between 0 and 1
+0.5 is then subtracted from the random number, creating an effective random range of -0.5 to 0.5
+Sort order is then determined based on the built-in compareFn(a,b)
+if the random number is postive, sort the first value after the second value (b,a)
+if the number is negative, sort the second after the first (a,b)
+if the number is 0, maintain the original sort order
+*/
+const generateRandomBoardValues = () => {
+    //Generate Starting Values
+    let startBoard = generateStartBoardValues();
+    //console.log(...startBoard);
+
+    //Sort to shuffle values
+    startBoard.sort(() => Math.random() - 0.5)
+    //console.log(...startBoard);
+
+    //Convert to 2D array to create rows and cols
+    sorted2Dboard = convertTo2DArray(startBoard);
+
+    //Set number value of tiles adjacent to mines
+    let completedBoard = incrementAdjacentMineTiles(sorted2Dboard);
+
+    return completedBoard;
+}
+
 //Increment the value of tiles adjacent to mines
 const incrementAdjacentMineTiles = (board) => {
     for (let i = 0 ; i < board.length;i++){
@@ -295,39 +324,8 @@ const incrementAdjacentMineTiles = (board) => {
             
         }
     }
-
-
     return board;
 };
-
-/*
-Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
-## SORTING
-The array is then sorted based on random criteria
-For each 2 values being compared, a random number is generated between 0 and 1
-0.5 is then subtracted from the random number, creating an effective random range of -0.5 to 0.5
-Sort order is then determined based on the built-in compareFn(a,b)
-if the random number is postive, sort the first value after the second value (b,a)
-if the number is negative, sort the second after the first (a,b)
-if the number is 0, maintain the original sort order
-*/
-const generateRandomBoardValues = () => {
-    //Generate Values
-    let startBoard = generateStartBoardValues();
-    //console.log(...startBoard);
-
-    //Sort
-    startBoard.sort(() => Math.random() - 0.5)
-    //console.log(...startBoard);
-
-    //Convert to 2D
-    sorted2Dboard = convertTo2DArray(startBoard);
-
-    //Set adjacent mine tile values
-    let completedBoard = incrementAdjacentMineTiles(sorted2Dboard);
-
-    return completedBoard;
-}
 
 //Build game elements based on the difficulty chosen
 const createBoard = () => {
