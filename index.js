@@ -90,7 +90,7 @@ const convertTo2DArray = (board) => {
     }
     //Fix 0 based index issue
     new2Dboard[new2Dboard.length - 1][new2Dboard.length - 1] = board[0];
-    console.log(...new2Dboard);
+    // console.log(...new2Dboard);
 
     return new2Dboard;
 };
@@ -131,11 +131,11 @@ const incrementAdjacentMineTiles = (board) => {
             //Non edge-case
             if (board[i][j] == -1 ){
                 if (i != 0 && j != 0 && i != board.length-1 && j != board[0].length-1){
-                console.log("-".repeat(30));
-                console.log("above"," : ",board[i-1][j-1], board[i-1][j], board[i-1][j+1]);
-                console.log(i,j,"c  : ",board[i][j-1], board[i][j], board[i][j+1]);
-                console.log("below"," : ",board[i+1][j-1], board[i+1][j], board[i+1][j+1]);
-                console.log("-".repeat(30));
+                // console.log("-".repeat(30));
+                // console.log("above"," : ",board[i-1][j-1], board[i-1][j], board[i-1][j+1]);
+                // console.log(i,j,"c  : ",board[i][j-1], board[i][j], board[i][j+1]);
+                // console.log("below"," : ",board[i+1][j-1], board[i+1][j], board[i+1][j+1]);
+                // console.log("-".repeat(30));
                 
                 //top row
                 if (board[i-1][j-1] != -1) {
@@ -327,6 +327,77 @@ const incrementAdjacentMineTiles = (board) => {
     return board;
 };
 
+const callRevealAdjacentTiles = (evt) => {
+    let currentX = evt.target.x;
+    let currentY = evt.target.y;
+    revealAdjacentTiles(currentX, currentY);
+};
+
+//Recursively reaveal adjacent 0 tiles
+const revealAdjacentTiles = (currentX, currentY) => {
+    // console.log("---");
+    // console.log(currentX, currentY);
+    // console.log(buttonValues[currentX][currentY]);
+    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "red";
+    
+    while (buttonValues[currentX][currentY] == 0 ){
+        //Check Below
+        if (currentX != buttonValues.length-1){
+            if (buttonValues[currentX+1][currentY] == 0){
+                revealAdjacentTiles(currentX+1, currentY);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Above
+        if (currentX != 0){
+            if (buttonValues[currentX-1][currentY] == 0){
+                revealAdjacentTiles(currentX-1, currentY);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Left
+        if (currentY != 0){
+            if (buttonValues[currentX][currentY-1] == 0){
+                revealAdjacentTiles(currentX, currentY-1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            }
+        }
+
+        //Check Right
+        if (currentY != buttonValues[0].length-1){
+            if (buttonValues[currentX][currentY+1] == 0){
+                revealAdjacentTiles(currentX, currentY+1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            }
+        }
+
+
+        return
+    }
+};
+
 //Build game elements based on the difficulty chosen
 const createBoard = () => {
     //Set variables based on difficulty
@@ -359,19 +430,20 @@ const createBoard = () => {
     buttonGrid.style.width = buttonGridWidth;
 
     //Generate the values for buttons to be set to
-    let buttonValues = generateRandomBoardValues();
+    buttonValues = generateRandomBoardValues();
     //Generate the button grid and set their values
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
             //Set button data
             const currentButton = document.createElement("button");
-            currentButton.id = j + "/" + + i
+            currentButton.id = i + "/" + j;
             currentButton.classList = "gridButton";
-            currentButton.x = j;
-            currentButton.y = i;
+            currentButton.x = i;
+            currentButton.y = j;
             currentButton.textContent = buttonValues[i][j];
             currentButton.isClicked = "false";
             currentButton.addEventListener("click", incrementCounter);
+            currentButton.addEventListener("click", callRevealAdjacentTiles);
             // currentButton.textContent = "⯀";
 
             //Style the button
@@ -482,6 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menuArea.appendChild(hardButton);
     menuArea.appendChild(resetButton);
     menuArea.appendChild(timer);
+    var buttonValues;
 
     //Add the play and menu areas to the main section of the page
     $("main").appendChild(menuArea)
