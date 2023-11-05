@@ -27,6 +27,10 @@ span {
     color: red;
 }
 
+fieldset {
+    border:none;
+}
+
 .menu {
     margin: 0px 15px;
 }

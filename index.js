@@ -5,6 +5,14 @@ const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
 };
 
+const triggerLoss = (evt) => {
+    if (evt.target.actualValue == -1){
+        $("#gameResult").textContent = "You Lose!";
+        $("#gameResult").style.color = "red";
+        $("#board").disabled = "disabled";
+    }
+};
+
 //Increments counter the first time a grid button is clicked
 const incrementCounter = (evt) => {
     if (evt.target.isClicked == "false"){
@@ -39,6 +47,7 @@ const resetTimer = () => {
 const resetPage = () => {
     showButtons();
     $("#board").remove();
+    gameResult.textContent = "";
 };
 
 //Hides buttons associated with choosing difficulty and shows the reset button
@@ -338,9 +347,9 @@ const revealAdjacentTiles = (currentX, currentY) => {
     // console.log("---");
     // console.log(currentX, currentY);
     // console.log(buttonValues[currentX][currentY]);
-    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "red";
     
     while (buttonValues[currentX][currentY] == 0 ){
+        document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "red";
         //Check Below
         if (currentX != buttonValues.length-1){
             if (buttonValues[currentX+1][currentY] == 0){
@@ -423,7 +432,7 @@ const createBoard = () => {
     $("#playArea").size = gridSize;
 
     //Generate an area to contain the button grid
-    let buttonGrid = document.createElement("div");
+    let buttonGrid = document.createElement("fieldset");
     buttonGrid.id = "board";
     buttonGrid.style.padding = "20px";
     buttonGrid.style.margin = "auto"
@@ -440,11 +449,13 @@ const createBoard = () => {
             currentButton.classList = "gridButton";
             currentButton.x = i;
             currentButton.y = j;
+            // currentButton.textContent = "⯀";
             currentButton.textContent = buttonValues[i][j];
+            currentButton.actualValue = buttonValues[i][j];
             currentButton.isClicked = "false";
             currentButton.addEventListener("click", incrementCounter);
             currentButton.addEventListener("click", callRevealAdjacentTiles);
-            // currentButton.textContent = "⯀";
+            currentButton.addEventListener("click", triggerLoss);
 
             //Style the button
             currentButton.style.backgroundColor = "#CCCCCC";
@@ -524,20 +535,26 @@ document.addEventListener("DOMContentLoaded", () => {
     mediumButton.addEventListener("click", createBoard);
     hardButton.addEventListener("click", createBoard);
 
-    //Build the counter and timer elements
+    //Build the timer element
     let timer = document.createElement("h3");
-    let counter = document.createElement("h3");
     timer.id = "timer";
-    counter.id = "counter";
     timer.textContent = "000";
-    counter.textContent = "000";
-    counter.style.display = "inline";
     timer.style.display = "inline";
-    counter.style.color = "red";
     timer.style.color = "red";
-    counter.style.backgroundColor = "black";
     timer.style.backgroundColor = "black";
     var timerInterval;
+
+    //Build the counter element
+    let counter = document.createElement("h3");
+    counter.id = "counter";
+    counter.textContent = "000";
+    counter.style.display = "inline";
+    counter.style.color = "red";
+    counter.style.backgroundColor = "black";
+
+    //Build the game result element
+    let gameResult = document.createElement("h4");
+    gameResult.id = "gameResult";
 
     //Start the timer
     easyButton.addEventListener("click", startTimer);
@@ -547,13 +564,14 @@ document.addEventListener("DOMContentLoaded", () => {
     //Center elements within playarea
     menuArea.style.textAlign = "center";
 
-    //Add the buttons to the play area
+    //Add the menu elements to the play area
     menuArea.appendChild(counter);
     menuArea.appendChild(easyButton);
     menuArea.appendChild(mediumButton);
     menuArea.appendChild(hardButton);
     menuArea.appendChild(resetButton);
     menuArea.appendChild(timer);
+    menuArea.appendChild(gameResult);
     var buttonValues;
 
     //Add the play and menu areas to the main section of the page
