@@ -358,6 +358,11 @@ const revealAdjacentTiles = (currentX, currentY) => {
             else {
                 buttonValues[currentX][currentY] = -2;
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                // console.log(document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]"));
+                
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").style.color = "blue";
+                }
             }
         }
         else {
@@ -373,6 +378,10 @@ const revealAdjacentTiles = (currentX, currentY) => {
             else {
                 buttonValues[currentX][currentY] = -2;
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").style.color = "blue";
+                }
+                
             }
         }
         else {
@@ -388,7 +397,15 @@ const revealAdjacentTiles = (currentX, currentY) => {
             else {
                 buttonValues[currentX][currentY] = -2;
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+
+                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").style.color = "blue";
+                }
             }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
         }
 
         //Check Right
@@ -399,9 +416,16 @@ const revealAdjacentTiles = (currentX, currentY) => {
             else {
                 buttonValues[currentX][currentY] = -2;
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+
+                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").style.color = "blue";
+                }
             }
         }
-
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
 
         return
     }
