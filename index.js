@@ -117,30 +117,26 @@ const generateStartBoardValues = () => {
         board.push(-1);
     }
 
-    while (board.length < $("#playArea").size * $("#playArea").size) {
+    while (board.length < $("#playArea").sizeX * $("#playArea").sizeY) {
         board.push(0)
     }
     return board;
 };
 
-// Converts 1D array to 2D based on sidelength of the grid
+// Converts 1D array to 2D based on length of the grid
 // loop through board length
 // add values to temporary row
 // when i is divisible by the length of 1 row, push the row to the sorted array and clear the temp row
-// due to 0 based indexing, the first value of the first row will be skipped and the last value of the last row will be undefined
-// to fix, set the last value of the last row 
 const convertTo2DArray = (board) => {
     let new2Dboard = [];
     let tempRow = [];
-    for (let i = 1; i <= board.length + 1; i++) {
+    for (let i = 0; i <= board.length-1; i++) {
         tempRow.push(board[i]);
-        if (i != 0 && i % $("#playArea").size == 0) {
+        if (i != 0 && (i+1) % $("#playArea").sizeY == 0) {
             new2Dboard.push(tempRow);
             tempRow = [];
         }
     }
-    //Fix 0 based index issue
-    new2Dboard[new2Dboard.length - 1][new2Dboard.length - 1] = board[0];
     // console.log(...new2Dboard);
 
     return new2Dboard;
@@ -567,22 +563,26 @@ const createBoard = () => {
     var mines;
     var buttonGridWidth;
     if ($("#playArea").difficulty == "easy") {
-        gridSize = 9;
+        gridSizeX = 9;
+        gridSizeY = 9;
         mines = 10;
         buttonGridWidth = "225px"
     }
     else if ($("#playArea").difficulty == "medium") {
-        gridSize = 16;
+        gridSizeX = 16;
+        gridSizeY = 16;
         mines = 40;
         buttonGridWidth = "400px"
     }
     else {
-        gridSize = 22;
+        gridSizeX = 20;
+        gridSizeY = 24;
         mines = 99;
-        buttonGridWidth = "1650px"
+        buttonGridWidth = "600px"
     }
     $("#playArea").mines = mines;
-    $("#playArea").size = gridSize;
+    $("#playArea").sizeX = gridSizeX;
+    $("#playArea").sizeY = gridSizeY;
 
     //Generate an area to contain the button grid
     let buttonGrid = document.createElement("fieldset");
@@ -594,8 +594,8 @@ const createBoard = () => {
     //Generate the values for buttons to be set to
     buttonValues = generateRandomBoardValues();
     //Generate the button grid and set their values
-    for (let i = 0; i < gridSize; i++) {
-        for (let j = 0; j < gridSize; j++) {
+    for (let i = 0; i < $("#playArea").sizeX; i++) {
+        for (let j = 0; j < $("#playArea").sizeY; j++) {
             //Set button data
             const currentButton = document.createElement("button");
             currentButton.id = i + "/" + j;
