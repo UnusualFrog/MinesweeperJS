@@ -401,8 +401,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 
                 if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue;
-                    // console.log((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue));
-                    // console.log(determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue)));
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue));
                 }
             }
@@ -422,6 +421,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").actualValue));
                 }
                 
@@ -443,6 +443,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
 
                 if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").actualValue));
                 }
             }
@@ -463,6 +464,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
 
                 if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").actualValue));
                 }
             }
@@ -482,6 +484,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").actualValue));
                 }
                 
@@ -502,6 +505,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").actualValue));
                 }
                 
@@ -522,6 +526,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").actualValue));
                 }
                 
@@ -542,6 +547,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent != "0"){
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").isClicked = "true";
                     document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").actualValue));
                 }
                 
