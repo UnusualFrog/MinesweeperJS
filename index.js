@@ -350,7 +350,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
     
     while (buttonValues[currentX][currentY] == 0 ){
         document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "red";
-        //Check Below
+        //Check Bottom
         if (currentX != buttonValues.length-1){
             if (buttonValues[currentX+1][currentY] == 0){
                 revealAdjacentTiles(currentX+1, currentY);
@@ -370,7 +370,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
             document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
         }
 
-        //Check Above
+        //Check Top
         if (currentX != 0){
             if (buttonValues[currentX-1][currentY] == 0){
                 revealAdjacentTiles(currentX-1, currentY);
@@ -420,6 +420,82 @@ const revealAdjacentTiles = (currentX, currentY) => {
                 if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent != -2){
                     document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").style.color = "blue";
                 }
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Top Left
+        if (currentX != 0 & currentY != 0){
+            if (buttonValues[currentX-1][currentY-1] == 0){
+                revealAdjacentTiles(currentX-1, currentY-1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").style.color = "blue";
+                }
+                
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Top Right
+        if (currentX != 0 & currentY != buttonValues[0].length-1){
+            if (buttonValues[currentX-1][currentY+1] == 0){
+                revealAdjacentTiles(currentX-1, currentY+1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").style.color = "blue";
+                }
+                
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Bottom Left
+        if (currentX != buttonValues.length-1 & currentY != 0){
+            if (buttonValues[currentX+1][currentY-1] == 0){
+                revealAdjacentTiles(currentX+1, currentY-1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").style.color = "blue";
+                }
+                
+            }
+        }
+        else {
+            buttonValues[currentX][currentY] = -2;
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+        }
+
+        //Check Bottom Right
+        if (currentX != buttonValues.length-1 & currentY != buttonValues[0].length-1){
+            if (buttonValues[currentX+1][currentY+1] == 0){
+                revealAdjacentTiles(currentX+1, currentY+1);
+            }
+            else {
+                buttonValues[currentX][currentY] = -2;
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent != -2){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").style.color = "blue";
+                }
+                
             }
         }
         else {
