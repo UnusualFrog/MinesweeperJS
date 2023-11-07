@@ -5,26 +5,28 @@ const setDifficulty = (evt) => {
     playArea.difficulty = evt.target.id;
 };
 
-const triggerLoss = (evt) => {
-    if (evt.target.actualValue == -1){
-        $("#gameResult").textContent = "You Lose!";
-        $("#gameResult").style.color = "red";
-        $("#board").disabled = "disabled";
-    }
+//Resets the page to its starting layout to start a new game
+const resetPage = () => {
+    showMenuButtons();
+    $("#board").remove();
+    gameResult.textContent = "";
 };
 
-//Increments counter the first time a grid button is clicked
-const incrementCounter = (evt) => {
-    if (evt.target.isClicked == "false"){
-        evt.target.isClicked = "true";
-    $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
-    };
-}
+//Hides buttons associated with choosing difficulty and shows the reset button
+const hideMenuButtons = () => {
+    $("#easy").hidden = true;
+    $("#medium").hidden = true;
+    $("#hard").hidden = true;
+    $("#reset").hidden = false;
+};
 
-//Resets the counter varibable for a new game
-const resetCounter = () => {
-    $("#counter").textContent = "000";
-}
+//Hides the reset button and shows buttons associated with choosing difficulty 
+const showMenuButtons = () => {
+    $("#easy").hidden = false;
+    $("#medium").hidden = false;
+    $("#hard").hidden = false;
+    $("#reset").hidden = true;
+};
 
 //Starts the time when a new game is selected
 const startTimer = () => {
@@ -42,28 +44,68 @@ const resetTimer = () => {
     clearInterval(timerInterval);
 };
 
+//Increments counter the first time a grid button is clicked
+const incrementClickCounter = () => {
+    $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
+}
 
-//Resets the page to its starting layout to start a new game
-const resetPage = () => {
-    showButtons();
-    $("#board").remove();
-    gameResult.textContent = "";
+//Resets the counter varibable for a new game
+const resetCounter = () => {
+    $("#counter").textContent = "000";
+}
+
+const triggerLoss = (evt) => {
+    if (evt.target.actualValue == -1){
+        $("#gameResult").textContent = "You Lose!";
+        $("#gameResult").style.color = "red";
+        $("#board").disabled = "disabled";
+        clearInterval(timerInterval);
+    }
 };
 
-//Hides buttons associated with choosing difficulty and shows the reset button
-const hideDifficultyButtons = () => {
-    $("#easy").hidden = true;
-    $("#medium").hidden = true;
-    $("#hard").hidden = true;
-    $("#reset").hidden = false;
+const revealClickedTile = (evt) => {
+    if (evt.target.isClicked == "false"){
+        evt.target.isClicked = "true";
+        evt.target.textContent = evt.target.actualValue;
+        evt.target.style.color = determineTileColor(evt.target.actualValue);
+        incrementClickCounter();
+    };
 };
 
-//Hides the reset button and shows buttons associated with choosing difficulty 
-const showButtons = () => {
-    $("#easy").hidden = false;
-    $("#medium").hidden = false;
-    $("#hard").hidden = false;
-    $("#reset").hidden = true;
+const determineTileColor = (tileValue) => {
+    if (tileValue == "-1"){
+        return "orange";
+    }
+    else if (tileValue == "0"){
+        return "#CCCCCC";
+    }
+    else if (tileValue == "1"){
+        return "#0100FE";
+    }
+    else if (tileValue == "2"){
+        return "#008000";
+    }
+    else if (tileValue == "3"){
+        return "#FE0000";
+    }
+    else if (tileValue == "4"){
+        return "#00007F";
+    }
+    else if (tileValue == "5"){
+        return "#800000";
+    }
+    else if (tileValue == "6"){
+        return "#008081";
+    }
+    else if (tileValue == "7"){
+        return "#000000";
+    }
+    else if (tileValue == "8"){
+        return "#808080";
+    }
+    else {
+        return "#FFFFFF";
+    }
 };
 
 // Generates starting values for board
@@ -349,7 +391,8 @@ const revealAdjacentTiles = (currentX, currentY) => {
     // console.log(buttonValues[currentX][currentY]);
     
     while (buttonValues[currentX][currentY] == 0 ){
-        document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "red";
+        document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").style.color = "#CCCCCC";
+        document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").isClicked = "true";
         //Check Bottom
         if (currentX != buttonValues.length-1){
             if (buttonValues[currentX+1][currentY] == 0){
@@ -357,17 +400,20 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
                 // console.log(document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]"));
                 
-                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").style.color = "blue";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue;
+                    // console.log((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue));
+                    // console.log(determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue)));
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]").actualValue));
                 }
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Top
@@ -377,16 +423,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
-                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").style.color = "blue";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]").actualValue));
                 }
                 
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Left
@@ -396,16 +443,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
 
-                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").style.color = "blue";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]").actualValue));
                 }
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Right
@@ -415,16 +463,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
 
-                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").style.color = "blue";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]").actualValue));
                 }
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Top Left
@@ -434,16 +483,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
-                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").style.color = "blue";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]").actualValue));
                 }
                 
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Top Right
@@ -453,16 +503,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
-                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").style.color = "blue";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]").actualValue));
                 }
                 
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Bottom Left
@@ -472,16 +523,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
-                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").style.color = "blue";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]").actualValue));
                 }
                 
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         //Check Bottom Right
@@ -491,16 +543,17 @@ const revealAdjacentTiles = (currentX, currentY) => {
             }
             else {
                 buttonValues[currentX][currentY] = -2;
-                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
-                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent != -2){
-                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").style.color = "blue";
+                document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
+                if (document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent != "0"){
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").textContent = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").actualValue;
+                    document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").style.color = determineTileColor((document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]").actualValue));
                 }
                 
             }
         }
         else {
             buttonValues[currentX][currentY] = -2;
-            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "-2";
+            document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]").textContent = "0";
         }
 
         return
@@ -549,11 +602,11 @@ const createBoard = () => {
             currentButton.classList = "gridButton";
             currentButton.x = i;
             currentButton.y = j;
-            // currentButton.textContent = "⯀";
-            currentButton.textContent = buttonValues[i][j];
+            currentButton.textContent = "?";
+            // currentButton.textContent = buttonValues[i][j];
             currentButton.actualValue = buttonValues[i][j];
             currentButton.isClicked = "false";
-            currentButton.addEventListener("click", incrementCounter);
+            currentButton.addEventListener("click", revealClickedTile);
             currentButton.addEventListener("click", callRevealAdjacentTiles);
             currentButton.addEventListener("click", triggerLoss);
 
@@ -621,9 +674,9 @@ document.addEventListener("DOMContentLoaded", () => {
     resetButton.addEventListener("click", resetTimer);
 
     //Hide all difficulty buttons when one is picked
-    easyButton.addEventListener("click", hideDifficultyButtons);
-    mediumButton.addEventListener("click", hideDifficultyButtons);
-    hardButton.addEventListener("click", hideDifficultyButtons);
+    easyButton.addEventListener("click", hideMenuButtons);
+    mediumButton.addEventListener("click", hideMenuButtons);
+    hardButton.addEventListener("click", hideMenuButtons);
 
     //Set difficulty value for later generation
     easyButton.addEventListener("click", setDifficulty);
