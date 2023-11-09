@@ -159,7 +159,7 @@ const generateRandomBoardValues = () => {
     //console.log(...startBoard);
 
     //Sort to shuffle values
-    startBoard.sort(() => Math.random() - 0.5)
+    startBoard.sort(() => Math.random() - 0.5);
     //console.log(...startBoard);
 
     //Convert to 2D array to create rows and cols
@@ -565,7 +565,8 @@ const revealAdjacentTiles = (currentX, currentY) => {
 //Build game elements based on the difficulty chosen
 const createBoard = () => {
     //Set variables based on difficulty
-    var gridSize;
+    var gridSizeX;
+    var gridSizeY;
     var mines;
     var buttonGridWidth;
     if ($("#playArea").difficulty == "easy") {
@@ -594,7 +595,7 @@ const createBoard = () => {
     let buttonGrid = document.createElement("fieldset");
     buttonGrid.id = "board";
     buttonGrid.style.padding = "20px";
-    buttonGrid.style.margin = "auto"
+    buttonGrid.style.margin = "auto";
     buttonGrid.style.width = buttonGridWidth;
 
     //Generate the values for buttons to be set to
