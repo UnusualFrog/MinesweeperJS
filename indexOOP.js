@@ -4,10 +4,34 @@ class Tile {
     value;
     x;
     y;
+    pageElement;
     constructor(value, x, y){
         this.value = value;
         this.x = x;
         this.y = y;
+    }
+
+    buildPageElement(){
+        const currentButton = document.createElement("button");
+        currentButton.id = this.x + "/" + this.y;
+        currentButton.classList = "gridButton";
+        currentButton.x = this.x;
+        currentButton.y = this.y;
+        
+        
+        currentButton.isClicked = "false";
+        // currentButton.addEventListener("click", revealClickedTile);
+        // currentButton.addEventListener("click", callRevealAdjacentTiles);
+        // currentButton.addEventListener("click", triggerLoss);
+
+        // Style the button
+        currentButton.style.backgroundColor = "#CCCCCC";
+        //currentButton.style.color = "#CCCCCC";
+        currentButton.style.color = "Black";
+        currentButton.style.fontFamily = 'Courier New, monospace';
+        currentButton.style.width = "25px";
+        currentButton.style.height = "25px";
+        this.pageElement = currentButton;
     }
 
     getValue(){
@@ -95,28 +119,11 @@ class Board {
         for (let i = 0; i < this.gridSizeX; i++) {
             for (let j = 0; j < this.gridSizeY; j++) {
                 //Set button data
-                const currentButton = document.createElement("button");
-                currentButton.id = i + "/" + j;
-                currentButton.classList = "gridButton";
-                currentButton.x = i;
-                currentButton.y = j;
+                this.boardGrid[i][j].buildPageElement();
+                const currentButton = this.boardGrid[i][j].pageElement;
+                currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 // currentButton.textContent = "?";
-                currentButton.textContent = this.boardGrid[i][j].getValue();
-                
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
-                currentButton.isClicked = "false";
-                // currentButton.addEventListener("click", revealClickedTile);
-                // currentButton.addEventListener("click", callRevealAdjacentTiles);
-                // currentButton.addEventListener("click", triggerLoss);
-    
-                //Style the button
-                currentButton.style.backgroundColor = "#CCCCCC";
-                //currentButton.style.color = "#CCCCCC";
-                currentButton.style.color = "Black";
-                currentButton.style.fontFamily = 'Courier New, monospace';
-                currentButton.style.width = "25px";
-                currentButton.style.height = "25px";
-    
                 buttonGrid.appendChild(currentButton);
             }
             // create and append a br element to break the lines.
