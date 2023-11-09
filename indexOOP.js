@@ -46,11 +46,9 @@ class Board {
     constructor(difficulty){
         this.difficulty = difficulty;
         this.setDifficultyValues(difficulty);
-        this.pageElement = this.buildPageElement();
         this.generateStartBoardValues();
         this.shuffleBoard();
         this.convertTo2DArray();
-        console.log(this.boardGrid);
         this.incrementAdjacentMineTiles();
         console.log(this.boardGrid);
         let str = ""
@@ -62,6 +60,7 @@ class Board {
             console.log(str)
             str = ""
         }
+        this.buildPageElement();
     }
 
     // Set values dependant on difficulty
@@ -93,7 +92,37 @@ class Board {
         buttonGrid.style.padding = "20px";
         buttonGrid.style.margin = "auto";
         buttonGrid.style.width = this.buttonGridWidth;
-        return buttonGrid;
+        for (let i = 0; i < this.gridSizeX; i++) {
+            for (let j = 0; j < this.gridSizeY; j++) {
+                //Set button data
+                const currentButton = document.createElement("button");
+                currentButton.id = i + "/" + j;
+                currentButton.classList = "gridButton";
+                currentButton.x = i;
+                currentButton.y = j;
+                // currentButton.textContent = "?";
+                currentButton.textContent = this.boardGrid[i][j].getValue();
+                
+                currentButton.actualValue = this.boardGrid[i][j].getValue();
+                currentButton.isClicked = "false";
+                // currentButton.addEventListener("click", revealClickedTile);
+                // currentButton.addEventListener("click", callRevealAdjacentTiles);
+                // currentButton.addEventListener("click", triggerLoss);
+    
+                //Style the button
+                currentButton.style.backgroundColor = "#CCCCCC";
+                //currentButton.style.color = "#CCCCCC";
+                currentButton.style.color = "Black";
+                currentButton.style.fontFamily = 'Courier New, monospace';
+                currentButton.style.width = "25px";
+                currentButton.style.height = "25px";
+    
+                buttonGrid.appendChild(currentButton);
+            }
+            // create and append a br element to break the lines.
+            buttonGrid.appendChild(document.createElement("br"));
+        }
+        this.pageElement = buttonGrid;
     };
 
     // Generates starting values for board
@@ -145,203 +174,203 @@ class Board {
     };
 
     //Increment the value of tiles adjacent to mines
- incrementAdjacentMineTiles(){
-    for (let i = 0 ; i < this.boardGrid.length;i++){
-        for (let j = 0; j < this.boardGrid[0].length;j++){
-            //Non edge-case
-            if (this.boardGrid[i][j].getValue() == -1 ){
-                if (i != 0 && j != 0 && i != this.boardGrid.length-1 && j != this.boardGrid[0].length-1){
-                // console.log("-".repeat(30));
-                // console.log("above"," : ",this.boardGrid[i-1][j-1], this.boardGrid[i-1][j], this.boardGrid[i-1][j+1]);
-                // console.log(i,j,"c  : ",this.boardGrid[i][j-1], this.boardGrid[i][j], this.boardGrid[i][j+1]);
-                // console.log("below"," : ",this.boardGrid[i+1][j-1], this.boardGrid[i+1][j], this.boardGrid[i+1][j+1]);
-                // console.log("-".repeat(30));
+    incrementAdjacentMineTiles(){
+        for (let i = 0 ; i < this.boardGrid.length;i++){
+            for (let j = 0; j < this.boardGrid[0].length;j++){
+                //Non edge-case
+                if (this.boardGrid[i][j].getValue() == -1 ){
+                    if (i != 0 && j != 0 && i != this.boardGrid.length-1 && j != this.boardGrid[0].length-1){
+                    // console.log("-".repeat(30));
+                    // console.log("above"," : ",this.boardGrid[i-1][j-1], this.boardGrid[i-1][j], this.boardGrid[i-1][j+1]);
+                    // console.log(i,j,"c  : ",this.boardGrid[i][j-1], this.boardGrid[i][j], this.boardGrid[i][j+1]);
+                    // console.log("below"," : ",this.boardGrid[i+1][j-1], this.boardGrid[i+1][j], this.boardGrid[i+1][j+1]);
+                    // console.log("-".repeat(30));
+                    
+                    //top row
+                    if (this.boardGrid[i-1][j-1].getValue() != -1) {
+                        this.boardGrid[i-1][j-1].setValue(this.boardGrid[i-1][j-1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i-1][j].getValue() != -1) {
+                        this.boardGrid[i-1][j].setValue(this.boardGrid[i-1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i-1][j+1].getValue() != -1) {
+                        this.boardGrid[i-1][j+1].setValue(this.boardGrid[i-1][j+1].getValue() + 1);
+                    }
+
+                    //mid row
+                    if (this.boardGrid[i][j-1].getValue() != -1) {
+                        this.boardGrid[i][j-1].setValue(this.boardGrid[i][j-1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i][j+1].getValue() != -1) {
+                        this.boardGrid[i][j+1].setValue(this.boardGrid[i][j+1].getValue() + 1);
+                    }
+                    
+                    //bottom row
+                    if (this.boardGrid[i+1][j-1].getValue() != -1) {
+                        this.boardGrid[i+1][j-1].setValue(this.boardGrid[i+1][j-1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i+1][j].getValue() != -1) {
+                        this.boardGrid[i+1][j].setValue(this.boardGrid[i+1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i+1][j+1].getValue() != -1) {
+                        this.boardGrid[i+1][j+1].setValue(this.boardGrid[i+1][j+1].getValue() + 1);
+                    }
+                }
+                // Top edge
+                else if (i == 0 && j != 0 && i != this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
+                    // Mid row
+                    if (this.boardGrid[i][j - 1].getValue() != -1) {
+                        this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i][j + 1].getValue() != -1) {
+                        this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
+                    }
+
+                    // Bottom row
+                    if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j].getValue() != -1) {
+                        this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
+                    }
+                }
+                // Bottom edge
+                else if (i != 0 && j != 0 && i == this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
+                    // Top row
+                    if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j].getValue() != -1) {
+                        this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
+                    }
+
+                    // Mid row
+                    if (this.boardGrid[i][j - 1].getValue() != -1) {
+                        this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i][j + 1].getValue() != -1) {
+                        this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
+                    }
+                }
+                // Left edge
+                else if (i != 0 && j == 0 && i != this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
+                    // Top row
+                    if (this.boardGrid[i - 1][j].getValue() != -1) {
+                        this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
+                    }
+
+                    // Mid row
+                    if (this.boardGrid[i][j + 1].getValue() != -1) {
+                        this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
+                    }
+
+                    // Bottom row
+                    if (this.boardGrid[i + 1][j].getValue() != -1) {
+                        this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
+                    }
+                }
+                // Right edge
+                else if (i != 0 && j != 0 && i != this.boardGrid.length - 1 && j == this.boardGrid[0].length - 1) {
+                    // Top row
+                    if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j].getValue() != -1) {
+                        this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
+                    }
+
+                    // Mid row
+                    if (this.boardGrid[i][j - 1].getValue() != -1) {
+                        this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
+                    }
+
+                    // Bottom row
+                    if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j].getValue() != -1) {
+                        this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
+                    }
+                }
+                // Top left corner
+                else if (i == 0 && j == 0) {
+                    // Mid row
+                    if (this.boardGrid[i][j + 1].getValue() != -1) {
+                        this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
+                    }
+
+                    // Bottom row
+                    if (this.boardGrid[i + 1][j].getValue() != -1) {
+                        this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
+                    }
+                }
+                // Top right corner
+                else if (i == 0 && j == this.boardGrid[0].length - 1) {
+                    // Mid row
+                    if (this.boardGrid[i][j - 1].getValue() != -1) {
+                        this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
+                    }
+
+                    // Bottom row
+                    if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i + 1][j].getValue() != -1) {
+                        this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
+                    }
+                }
+                // Bottom left corner
+                else if (i == this.boardGrid[0].length - 1 && j == 0) {
+                    // Top row
+                    if (this.boardGrid[i - 1][j].getValue() != -1) {
+                        this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
+                    }
+
+                    // Mid row
+                    if (this.boardGrid[i][j + 1].getValue() != -1) {
+                        this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
+                    }
+                }
+
+                // Bottom right corner
+                else if (i == this.boardGrid[0].length - 1 && j == this.boardGrid[0].length - 1) {
+                    // Top row
+                    if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
+                        this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
+                    }
+                    if (this.boardGrid[i - 1][j].getValue() != -1) {
+                        this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
+                    }
+
+                    // Mid row
+                    if (this.boardGrid[i][j - 1].getValue() != -1) {
+                        this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
+                    }
+                }
+
+            }
                 
-                //top row
-                if (this.boardGrid[i-1][j-1].getValue() != -1) {
-                    this.boardGrid[i-1][j-1].setValue(this.boardGrid[i-1][j-1].getValue() + 1);
-                }
-                if (this.boardGrid[i-1][j].getValue() != -1) {
-                    this.boardGrid[i-1][j].setValue(this.boardGrid[i-1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i-1][j+1].getValue() != -1) {
-                    this.boardGrid[i-1][j+1].setValue(this.boardGrid[i-1][j+1].getValue() + 1);
-                }
-
-                //mid row
-                if (this.boardGrid[i][j-1].getValue() != -1) {
-                    this.boardGrid[i][j-1].setValue(this.boardGrid[i][j-1].getValue() + 1);
-                }
-                if (this.boardGrid[i][j+1].getValue() != -1) {
-                    this.boardGrid[i][j+1].setValue(this.boardGrid[i][j+1].getValue() + 1);
-                }
-                
-                //bottom row
-                if (this.boardGrid[i+1][j-1].getValue() != -1) {
-                    this.boardGrid[i+1][j-1].setValue(this.boardGrid[i+1][j-1].getValue() + 1);
-                }
-                if (this.boardGrid[i+1][j].getValue() != -1) {
-                    this.boardGrid[i+1][j].setValue(this.boardGrid[i+1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i+1][j+1].getValue() != -1) {
-                    this.boardGrid[i+1][j+1].setValue(this.boardGrid[i+1][j+1].getValue() + 1);
-                }
             }
-            // Top edge
-            else if (i == 0 && j != 0 && i != this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
-                // Mid row
-                if (this.boardGrid[i][j - 1].getValue() != -1) {
-                    this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i][j + 1].getValue() != -1) {
-                    this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
-                }
-
-                // Bottom row
-                if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j].getValue() != -1) {
-                    this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
-                }
-            }
-            // Bottom edge
-            else if (i != 0 && j != 0 && i == this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
-                // Top row
-                if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j].getValue() != -1) {
-                    this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
-                }
-
-                // Mid row
-                if (this.boardGrid[i][j - 1].getValue() != -1) {
-                    this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i][j + 1].getValue() != -1) {
-                    this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
-                }
-            }
-            // Left edge
-            else if (i != 0 && j == 0 && i != this.boardGrid.length - 1 && j != this.boardGrid[0].length - 1) {
-                // Top row
-                if (this.boardGrid[i - 1][j].getValue() != -1) {
-                    this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
-                }
-
-                // Mid row
-                if (this.boardGrid[i][j + 1].getValue() != -1) {
-                    this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
-                }
-
-                // Bottom row
-                if (this.boardGrid[i + 1][j].getValue() != -1) {
-                    this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
-                }
-            }
-            // Right edge
-            else if (i != 0 && j != 0 && i != this.boardGrid.length - 1 && j == this.boardGrid[0].length - 1) {
-                // Top row
-                if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j].getValue() != -1) {
-                    this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
-                }
-
-                // Mid row
-                if (this.boardGrid[i][j - 1].getValue() != -1) {
-                    this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
-                }
-
-                // Bottom row
-                if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j].getValue() != -1) {
-                    this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
-                }
-            }
-            // Top left corner
-            else if (i == 0 && j == 0) {
-                // Mid row
-                if (this.boardGrid[i][j + 1].getValue() != -1) {
-                    this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
-                }
-
-                // Bottom row
-                if (this.boardGrid[i + 1][j].getValue() != -1) {
-                    this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j + 1].setValue(this.boardGrid[i + 1][j + 1].getValue() + 1);
-                }
-            }
-            // Top right corner
-            else if (i == 0 && j == this.boardGrid[0].length - 1) {
-                // Mid row
-                if (this.boardGrid[i][j - 1].getValue() != -1) {
-                    this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
-                }
-
-                // Bottom row
-                if (this.boardGrid[i + 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i + 1][j - 1].setValue(this.boardGrid[i + 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i + 1][j].getValue() != -1) {
-                    this.boardGrid[i + 1][j].setValue(this.boardGrid[i + 1][j].getValue() + 1);
-                }
-            }
-            // Bottom left corner
-            else if (i == this.boardGrid[0].length - 1 && j == 0) {
-                // Top row
-                if (this.boardGrid[i - 1][j].getValue() != -1) {
-                    this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j + 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j + 1].setValue(this.boardGrid[i - 1][j + 1].getValue() + 1);
-                }
-
-                // Mid row
-                if (this.boardGrid[i][j + 1].getValue() != -1) {
-                    this.boardGrid[i][j + 1].setValue(this.boardGrid[i][j + 1].getValue() + 1);
-                }
-            }
-
-            // Bottom right corner
-            else if (i == this.boardGrid[0].length - 1 && j == this.boardGrid[0].length - 1) {
-                // Top row
-                if (this.boardGrid[i - 1][j - 1].getValue() != -1) {
-                    this.boardGrid[i - 1][j - 1].setValue(this.boardGrid[i - 1][j - 1].getValue() + 1);
-                }
-                if (this.boardGrid[i - 1][j].getValue() != -1) {
-                    this.boardGrid[i - 1][j].setValue(this.boardGrid[i - 1][j].getValue() + 1);
-                }
-
-                // Mid row
-                if (this.boardGrid[i][j - 1].getValue() != -1) {
-                    this.boardGrid[i][j - 1].setValue(this.boardGrid[i][j - 1].getValue() + 1);
-                }
-            }
-
         }
-            
-        }
-    }
-};
+    };
 
     
 }
