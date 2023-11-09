@@ -11,29 +11,6 @@ class Tile {
         this.y = y;
     }
 
-    buildPageElement(){
-        const currentButton = document.createElement("button");
-        currentButton.id = this.x + "/" + this.y;
-        currentButton.classList = "gridButton";
-        currentButton.x = this.x;
-        currentButton.y = this.y;
-        
-        
-        currentButton.isClicked = "false";
-        // currentButton.addEventListener("click", revealClickedTile);
-        // currentButton.addEventListener("click", callRevealAdjacentTiles);
-        // currentButton.addEventListener("click", triggerLoss);
-
-        // Style the button
-        currentButton.style.backgroundColor = "#CCCCCC";
-        //currentButton.style.color = "#CCCCCC";
-        currentButton.style.color = "Black";
-        currentButton.style.fontFamily = 'Courier New, monospace';
-        currentButton.style.width = "25px";
-        currentButton.style.height = "25px";
-        this.pageElement = currentButton;
-    }
-
     getValue(){
         return this.value;
     }
@@ -55,7 +32,80 @@ class Tile {
 
     setY(newY){
         this.y = newY;
-    } 
+    }
+    
+    buildPageElement(){
+        const currentButton = document.createElement("button");
+        currentButton.id = this.x + "/" + this.y;
+        currentButton.classList = "gridButton";
+        currentButton.x = this.x;
+        currentButton.y = this.y;
+        currentButton.textContent = "?";
+        currentButton.isClicked = "false";
+
+        currentButton.addEventListener("click", this.revealClickedTile);
+        
+        // currentButton.addEventListener("click", triggerLoss);
+
+        // Style the button
+        currentButton.style.backgroundColor = "#CCCCCC";
+        //currentButton.style.color = "#CCCCCC";
+        currentButton.style.color = "Black";
+        currentButton.style.fontFamily = 'Courier New, monospace';
+        currentButton.style.width = "25px";
+        currentButton.style.height = "25px";
+        this.pageElement = currentButton;
+    }
+    
+    revealClickedTile = (evt) => {
+        if (evt.target.isClicked == "false"){
+            evt.target.isClicked = "true";
+            evt.target.textContent = evt.target.actualValue;
+            evt.target.style.color = this.determineTileColor(evt.target.actualValue);
+            this.incrementClickCounter();
+        };
+    };
+
+    determineTileColor = (tileValue) => {
+        if (tileValue == "-1"){
+            return "orange";
+        }
+        else if (tileValue == "0"){
+            return "#CCCCCC";
+        }
+        else if (tileValue == "1"){
+            return "#0100FE";
+        }
+        else if (tileValue == "2"){
+            return "#008000";
+        }
+        else if (tileValue == "3"){
+            return "#FE0000";
+        }
+        else if (tileValue == "4"){
+            return "#00007F";
+        }
+        else if (tileValue == "5"){
+            return "#800000";
+        }
+        else if (tileValue == "6"){
+            return "#008081";
+        }
+        else if (tileValue == "7"){
+            return "#000000";
+        }
+        else if (tileValue == "8"){
+            return "#808080";
+        }
+        else {
+            return "#FFFFFF";
+        }
+    };
+
+    //Increments counter the first time a grid button is clicked
+    incrementClickCounter = () => {
+        $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
+    }
 }
 
 class Board {
@@ -121,9 +171,11 @@ class Board {
                 //Set button data
                 this.boardGrid[i][j].buildPageElement();
                 const currentButton = this.boardGrid[i][j].pageElement;
-                currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
-                // currentButton.textContent = "?";
+                // currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
+                
+                currentButton.addEventListener("click", this.callRevealAdjacentTiles);
+
                 buttonGrid.appendChild(currentButton);
             }
             // create and append a br element to break the lines.
@@ -379,6 +431,16 @@ class Board {
         }
     };
 
+    callRevealAdjacentTiles = (evt) => {
+        let currentX = evt.target.x;
+        let currentY = evt.target.y;
+        this.revealAdjacentTiles(currentX, currentY);
+    };
+
+    revealAdjacentTiles = (currentX, currentY) => {
+        console.log("HUZZAH!");
+    };
+
     
 }
 
@@ -393,9 +455,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
+    //Build the counter element
+    let counter = document.createElement("h3");
+    counter.id = "counter";
+    counter.textContent = "000";
+    counter.style.display = "inline";
+    counter.style.color = "red";
+    counter.style.backgroundColor = "black";
+
     gameBoard = new Board("easy");
 
     playArea.appendChild(gameBoard.pageElement);
 
+    $("main").appendChild(counter);
     $("main").appendChild(playArea);
+    
 });
