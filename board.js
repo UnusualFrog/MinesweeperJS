@@ -119,7 +119,7 @@ class Board {
     };
 
     //Resets the page to its starting layout to start a new game
-    resetPage = () => {
+    static resetPage = () => {
         this.showMenuButtons();
         $("#board").remove();
         gameResult.textContent = "";
@@ -127,7 +127,7 @@ class Board {
 
 
     //Hides the reset button and shows buttons associated with choosing difficulty 
-    showMenuButtons = () => {
+    static showMenuButtons = () => {
         $("#easy").hidden = false;
         $("#medium").hidden = false;
         $("#hard").hidden = false;
@@ -546,22 +546,22 @@ class Board {
     }
 
     //Resets the counter varibable for a new game
-    resetCounter = () => {
+    static resetCounter = () => {
         $("#counter").textContent = "000";
     }
 
     //Starts the time when a new game is selected
-    startTimer = () => {
+    static startTimer = () => {
         this.timerInterval = setInterval(this.incrementTimer, 1000);
     };
 
     //Increments the timer while a new game is running
-    incrementTimer = () => {
+    static incrementTimer = () => {
         $("#timer").textContent = ('000' + (parseInt($("#timer").textContent) + 1)).slice(-3);
     };
 
     //Resets the timer for a new game when reset it clicked
-    resetTimer = () => {
+    static resetTimer = () => {
         $("#timer").textContent = "000";
         clearInterval(this.timerInterval);
     };

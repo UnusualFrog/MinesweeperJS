@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
-    gameBoard = new Board("easy");
-    playArea.appendChild(gameBoard.pageElement);
+    // gameBoard = new Board("easy");
+    // playArea.appendChild(gameBoard.pageElement);
 
     //Build area for menu elements
     let menuArea = document.createElement("div");
@@ -26,24 +26,42 @@ document.addEventListener("DOMContentLoaded", () => {
     let resetButton =   new menuButton("reset");
 
     // Hide the reset button until a difficulty is chosen
-    resetButton.pageElement.addEventListener("click", gameBoard.resetPage);
-    resetButton.pageElement.addEventListener("click", gameBoard.resetCounter);
-    resetButton.pageElement.addEventListener("click", gameBoard.resetTimer);
+    resetButton.pageElement.addEventListener("click", Board.resetPage);
+    resetButton.pageElement.addEventListener("click", Board.resetCounter);
+    resetButton.pageElement.addEventListener("click", Board.resetTimer);
 
     // Hide all difficulty buttons when one is picked
     easyButton.pageElement.addEventListener("click", easyButton.hideMenuButtons);
     mediumButton.pageElement.addEventListener("click", mediumButton.hideMenuButtons);
     hardButton.pageElement.addEventListener("click", hardButton.hideMenuButtons);
 
-    //Set difficulty value for later generation
-    // easyButton.addEventListener("click", setDifficulty);
-    // mediumButton.addEventListener("click", setDifficulty);
-    // hardButton.addEventListener("click", setDifficulty);
+    // Set difficulty value for later generation
+    easyButton.pageElement.addEventListener("click", () => {
+        playArea.difficulty = "easy";
+        console.log(playArea.difficulty)
+    });
+    mediumButton.pageElement.addEventListener("click", () => {
+        playArea.difficulty = "medium";
+        console.log(playArea.difficulty)
+    });
+    hardButton.pageElement.addEventListener("click", () => {
+        playArea.difficulty = "hard";
+        console.log(playArea.difficulty)
+    });
 
-    //Build the game board when a difficulty is chosen
-    // easyButton.addEventListener("click", createBoard);
-    // mediumButton.addEventListener("click", createBoard);
-    // hardButton.addEventListener("click", createBoard);
+    //Build the game board when a difficulty is chosen and append to the page
+    easyButton.pageElement.addEventListener("click", () => {
+        let gameBoard = new Board(playArea.difficulty);
+        playArea.appendChild(gameBoard.pageElement);
+    });
+    mediumButton.pageElement.addEventListener("click", () => {
+        let gameBoard = new Board(playArea.difficulty);
+        playArea.appendChild(gameBoard.pageElement);
+    });
+    hardButton.pageElement.addEventListener("click", () => {
+        let gameBoard = new Board(playArea.difficulty);
+        playArea.appendChild(gameBoard.pageElement);
+    });
 
     //Build the timer element
     let timer = document.createElement("h3");
@@ -67,9 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
     gameResult.id = "gameResult";
 
     //Start the timer
-    easyButton.pageElement.addEventListener("click", gameBoard.startTimer);
-    mediumButton.pageElement.addEventListener("click", gameBoard.startTimer);
-    hardButton.pageElement.addEventListener("click", gameBoard.startTimer);
+    easyButton.pageElement.addEventListener("click", Board.startTimer);
+    mediumButton.pageElement.addEventListener("click", Board.startTimer);
+    hardButton.pageElement.addEventListener("click", Board.startTimer);
 
     //Center elements within playarea
     menuArea.style.textAlign = "center";
