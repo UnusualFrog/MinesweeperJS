@@ -326,7 +326,7 @@ class Board {
     //Recursively reaveal adjacent 0 tiles and reveal and color mine numbers
     revealAdjacentTiles = (currentX, currentY) => {
         let tile = this.boardGrid[currentX][currentY];
-        // console.log(tile.getValue());
+        // console.log(tile);
 
         while (tile.getValue() == 0) {
             let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")

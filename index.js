@@ -16,30 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     menuArea.style.paddingBottom = "4px";
     menuArea.style.borderBottom = "2px solid grey";
 
-    //Build buttons for setting difficulty and reseting the game
-    let easyButton = document.createElement("button");
-    let mediumButton = document.createElement("button");
-    let hardButton = document.createElement("button");
-    let resetButton = document.createElement("button");
-
-    easyButton.textContent = "Beginner";
-    mediumButton.textContent = "Intermediate";
-    hardButton.textContent = "Expert";
-    resetButton.textContent = "Reset";
-
-    easyButton.id = "easy";
-    mediumButton.id = "medium";
-    hardButton.id = "hard";
-    resetButton.id = "reset";
-
-    //Set to menu to differentitate from buttonGrid buttons
-    easyButton.classList = "menu";
-    mediumButton.classList = "menu";
-    hardButton.classList = "menu";
-    resetButton.classList = "menu";
+    // //Build buttons for setting difficulty and reseting the game
+    let easyButton = new menuButton("easy");
+    let mediumButton =  new menuButton("medium");
+    let hardButton =    new menuButton("hard");
+    let resetButton =   new menuButton("reset");
 
     //Hide the reset button until a difficulty is chosen
-    resetButton.hidden = true;
     // resetButton.addEventListener("click", resetPage);
     // resetButton.addEventListener("click", resetCounter);
     // resetButton.addEventListener("click", resetTimer);
@@ -88,15 +71,15 @@ document.addEventListener("DOMContentLoaded", () => {
     //Center elements within playarea
     menuArea.style.textAlign = "center";
 
-    gameBoard = new Board("medium");
+    gameBoard = new Board("easy");
     playArea.appendChild(gameBoard.pageElement);
 
     //Add the menu elements to the play area
     menuArea.appendChild(counter);
-    menuArea.appendChild(easyButton);
-    menuArea.appendChild(mediumButton);
-    menuArea.appendChild(hardButton);
-    menuArea.appendChild(resetButton);
+    menuArea.appendChild(easyButton.pageElement);
+    menuArea.appendChild(mediumButton.pageElement);
+    menuArea.appendChild(hardButton.pageElement);
+    menuArea.appendChild(resetButton.pageElement);
     menuArea.appendChild(timer);
     menuArea.appendChild(gameResult);
     var buttonValues;
