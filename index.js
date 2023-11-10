@@ -475,7 +475,7 @@ const revealAdjacentTiles = (currentX, currentY) => {
         }
 
         //Check Top Left
-        if (currentX != 0 & currentY != 0){
+        if (currentX != 0 && currentY != 0){
             if (buttonValues[currentX-1][currentY-1] == 0){
                 revealAdjacentTiles(currentX-1, currentY-1);
             }

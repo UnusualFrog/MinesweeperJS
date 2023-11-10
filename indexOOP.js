@@ -446,9 +446,9 @@ class Board {
         while (tile.getValue() == 0){
             let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")
             tileElement.style.color = "red";
+
             //Check Bottom
             if (currentX != this.boardGrid.length-1){
-                // let tileAdjacent = this.boardGrid[currentX+1][currentY];
                 if (this.boardGrid[currentX+1][currentY].getValue() == 0){
                     this.revealAdjacentTiles(currentX+1, currentY);
                 }
@@ -468,6 +468,163 @@ class Board {
                 this.boardGrid[currentX][currentY].setValue(2);
                 tileElement.textContent = "0";
             }
+
+            //Check Top
+            if (currentX != 0){
+                if (this.boardGrid[currentX-1][currentY].getValue() == 0){
+                    this.revealAdjacentTiles(currentX-1, currentY);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Left
+            if (currentY != 0){
+                if (this.boardGrid[currentX][currentY-1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX, currentY-1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY-1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Right
+            if (currentY != this.boardGrid[0].length-1){
+                if (this.boardGrid[currentX][currentY+1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX, currentY+1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY+1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Top Left
+            if (currentX != 0 && currentY != 0){
+                if (this.boardGrid[currentX-1][currentY-1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX-1, currentY-1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY-1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Top Right
+            if (currentX != 0 && currentY != this.boardGrid[0].length-1){
+                if (this.boardGrid[currentX-1][currentY+1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX-1, currentY+1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX-1}/${currentY+1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Bottom Left
+            if (currentX != this.boardGrid.length-1 && currentY != 0){
+                if (this.boardGrid[currentX+1][currentY-1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX+1, currentY-1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY-1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            //Check Bottom Right
+            if (currentX != this.boardGrid.length-1 && currentY != this.boardGrid[0].length-1){
+                if (this.boardGrid[currentX+1][currentY+1].getValue() == 0){
+                    this.revealAdjacentTiles(currentX+1, currentY+1);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY+1}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+
+            
 
             return;
         }
@@ -566,7 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //Center elements within playarea
     menuArea.style.textAlign = "center";
 
-    gameBoard = new Board("easy");
+    gameBoard = new Board("hard");
     playArea.appendChild(gameBoard.pageElement);
 
     //Add the menu elements to the play area
