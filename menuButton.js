@@ -1,7 +1,7 @@
-class menuButton {
+class MenuButton {
     id;
-
     pageElement;
+    
     constructor (type) {
         this.id = type;
         this.buildPageElement();
@@ -36,7 +36,7 @@ class menuButton {
             menuButton.textContent = "Reset";
             menuButton.id = "reset";
             menuButton.classList = "menu";
-            // menuButton.hidden = true;
+            menuButton.hidden = true;
         }
         this.pageElement = menuButton;
     }

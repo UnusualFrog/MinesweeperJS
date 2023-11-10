@@ -34,26 +34,9 @@ class Tile {
         this.y = newY;
     }
 
-    buildPageElement() {
-        const currentButton = document.createElement("button");
-        currentButton.id = this.x + "/" + this.y;
-        currentButton.classList = "gridButton";
-        currentButton.x = this.x;
-        currentButton.y = this.y;
-        currentButton.textContent = "?";
-        currentButton.isClicked = "false";
-
-        currentButton.addEventListener("click", this.revealClickedTile);
-        currentButton.addEventListener("click", this.triggerLoss);
-
-        // Style the button
-        currentButton.style.backgroundColor = "#CCCCCC";
-        //currentButton.style.color = "#CCCCCC";
-        currentButton.style.color = "Black";
-        currentButton.style.fontFamily = 'Courier New, monospace';
-        currentButton.style.width = "25px";
-        currentButton.style.height = "25px";
-        this.pageElement = currentButton;
+    //Increments counter the first time a grid button is clicked
+    incrementClickCounter = () => {
+        $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
     }
 
     // Reveals the value of the tile clicked, sets its color and increments the click counter
@@ -72,7 +55,7 @@ class Tile {
             $("#gameResult").textContent = "You Lose!";
             $("#gameResult").style.color = "red";
             $("#board").disabled = "disabled";
-            // clearInterval(timerInterval);
+            clearInterval($("#timer").interval);
         }
     };
 
@@ -114,8 +97,27 @@ class Tile {
         }
     };
 
-    //Increments counter the first time a grid button is clicked
-    incrementClickCounter = () => {
-        $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
+    
+
+    buildPageElement() {
+        const currentButton = document.createElement("button");
+        currentButton.id = this.x + "/" + this.y;
+        currentButton.classList = "gridButton";
+        currentButton.x = this.x;
+        currentButton.y = this.y;
+        currentButton.textContent = "?";
+        currentButton.isClicked = "false";
+
+        currentButton.addEventListener("click", this.revealClickedTile);
+        currentButton.addEventListener("click", this.triggerLoss);
+
+        // Style the button
+        currentButton.style.backgroundColor = "#CCCCCC";
+        //currentButton.style.color = "#CCCCCC";
+        currentButton.style.color = "Black";
+        currentButton.style.fontFamily = 'Courier New, monospace';
+        currentButton.style.width = "25px";
+        currentButton.style.height = "25px";
+        this.pageElement = currentButton;
     }
 }
