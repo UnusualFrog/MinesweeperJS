@@ -9,9 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
-    // gameBoard = new Board("easy");
-    // playArea.appendChild(gameBoard.pageElement);
-
     //Build area for menu elements
     let menuArea = document.createElement("div");
     menuArea.id = "menuArea";
@@ -31,9 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     resetButton.pageElement.addEventListener("click", Board.resetTimer);
 
     // Hide all difficulty buttons when one is picked
-    easyButton.pageElement.addEventListener("click", easyButton.hideMenuButtons);
-    mediumButton.pageElement.addEventListener("click", mediumButton.hideMenuButtons);
-    hardButton.pageElement.addEventListener("click", hardButton.hideMenuButtons);
+    easyButton.pageElement.addEventListener("click", menuButton.hideMenuButtons);
+    mediumButton.pageElement.addEventListener("click", menuButton.hideMenuButtons);
+    hardButton.pageElement.addEventListener("click", menuButton.hideMenuButtons);
 
     // Set difficulty value for later generation
     easyButton.pageElement.addEventListener("click", () => {

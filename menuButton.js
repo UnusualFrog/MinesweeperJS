@@ -7,6 +7,14 @@ class menuButton {
         this.buildPageElement();
     }
 
+    //Hides buttons associated with choosing difficulty and shows the reset button
+    static hideMenuButtons = () => {
+        $("#easy").hidden = true;
+        $("#medium").hidden = true;
+        $("#hard").hidden = true;
+        $("#reset").hidden = false;
+    };
+
     buildPageElement(){
         let menuButton = document.createElement("button");
         if (this.id == "easy"){
@@ -32,13 +40,5 @@ class menuButton {
         }
         this.pageElement = menuButton;
     }
-
-    //Hides buttons associated with choosing difficulty and shows the reset button
-    hideMenuButtons = () => {
-        $("#easy").hidden = true;
-        $("#medium").hidden = true;
-        $("#hard").hidden = true;
-        $("#reset").hidden = false;
-    };
     
 }
