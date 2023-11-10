@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
+    gameBoard = new Board("easy");
+    playArea.appendChild(gameBoard.pageElement);
+
     //Build area for menu elements
     let menuArea = document.createElement("div");
     menuArea.id = "menuArea";
@@ -22,15 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let hardButton =    new menuButton("hard");
     let resetButton =   new menuButton("reset");
 
-    //Hide the reset button until a difficulty is chosen
-    // resetButton.addEventListener("click", resetPage);
-    // resetButton.addEventListener("click", resetCounter);
-    // resetButton.addEventListener("click", resetTimer);
+    // Hide the reset button until a difficulty is chosen
+    resetButton.pageElement.addEventListener("click", gameBoard.resetPage);
+    resetButton.pageElement.addEventListener("click", gameBoard.resetCounter);
+    resetButton.pageElement.addEventListener("click", gameBoard.resetTimer);
 
-    //Hide all difficulty buttons when one is picked
-    // easyButton.addEventListener("click", hideMenuButtons);
-    // mediumButton.addEventListener("click", hideMenuButtons);
-    // hardButton.addEventListener("click", hideMenuButtons);
+    // Hide all difficulty buttons when one is picked
+    easyButton.pageElement.addEventListener("click", easyButton.hideMenuButtons);
+    mediumButton.pageElement.addEventListener("click", mediumButton.hideMenuButtons);
+    hardButton.pageElement.addEventListener("click", hardButton.hideMenuButtons);
 
     //Set difficulty value for later generation
     // easyButton.addEventListener("click", setDifficulty);
@@ -64,15 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
     gameResult.id = "gameResult";
 
     //Start the timer
-    // easyButton.addEventListener("click", startTimer);
-    // mediumButton.addEventListener("click", startTimer);
-    // hardButton.addEventListener("click", startTimer);
+    easyButton.pageElement.addEventListener("click", gameBoard.startTimer);
+    mediumButton.pageElement.addEventListener("click", gameBoard.startTimer);
+    hardButton.pageElement.addEventListener("click", gameBoard.startTimer);
 
     //Center elements within playarea
     menuArea.style.textAlign = "center";
-
-    gameBoard = new Board("easy");
-    playArea.appendChild(gameBoard.pageElement);
 
     //Add the menu elements to the play area
     menuArea.appendChild(counter);

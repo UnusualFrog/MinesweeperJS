@@ -28,9 +28,17 @@ class menuButton {
             menuButton.textContent = "Reset";
             menuButton.id = "reset";
             menuButton.classList = "menu";
-            menuButton.hidden = true;
+            // menuButton.hidden = true;
         }
         this.pageElement = menuButton;
     }
+
+    //Hides buttons associated with choosing difficulty and shows the reset button
+    hideMenuButtons = () => {
+        $("#easy").hidden = true;
+        $("#medium").hidden = true;
+        $("#hard").hidden = true;
+        $("#reset").hidden = false;
+    };
     
 }

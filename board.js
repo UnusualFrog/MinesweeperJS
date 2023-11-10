@@ -7,6 +7,7 @@ class Board {
     buttonGridWidth;
     boardGrid = [];
     pageElement;
+    timerInterval;
 
     //Sets game attributes based on the difficulty paramater,
     // then generates values for a board based on the attributes set,
@@ -115,6 +116,30 @@ class Board {
             }
         }
         this.boardGrid = new2Dboard;
+    };
+
+    //Resets the page to its starting layout to start a new game
+    resetPage = () => {
+        this.showMenuButtons();
+        $("#board").remove();
+        gameResult.textContent = "";
+    };
+
+
+    //Hides the reset button and shows buttons associated with choosing difficulty 
+    showMenuButtons = () => {
+        $("#easy").hidden = false;
+        $("#medium").hidden = false;
+        $("#hard").hidden = false;
+        $("#reset").hidden = true;
+    };
+
+    //Hides buttons associated with choosing difficulty and shows the reset button
+    hideMenuButtons = () => {
+        $("#easy").hidden = true;
+        $("#medium").hidden = true;
+        $("#hard").hidden = true;
+        $("#reset").hidden = false;
     };
 
     //Increment the value of tiles adjacent to mines
@@ -513,6 +538,32 @@ class Board {
 
             return;
         }
+    };
+
+    //Increments counter the first time a grid button is clicked
+    incrementClickCounter = () => {
+        $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
+    }
+
+    //Resets the counter varibable for a new game
+    resetCounter = () => {
+        $("#counter").textContent = "000";
+    }
+
+    //Starts the time when a new game is selected
+    startTimer = () => {
+        this.timerInterval = setInterval(this.incrementTimer, 1000);
+    };
+
+    //Increments the timer while a new game is running
+    incrementTimer = () => {
+        $("#timer").textContent = ('000' + (parseInt($("#timer").textContent) + 1)).slice(-3);
+    };
+
+    //Resets the timer for a new game when reset it clicked
+    resetTimer = () => {
+        $("#timer").textContent = "000";
+        clearInterval(this.timerInterval);
     };
 
 
