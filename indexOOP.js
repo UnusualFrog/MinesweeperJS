@@ -40,10 +40,10 @@ class Tile {
         currentButton.classList = "gridButton";
         currentButton.x = this.x;
         currentButton.y = this.y;
-        currentButton.textContent = "?";
+        // currentButton.textContent = "?";
         currentButton.isClicked = "false";
 
-        currentButton.addEventListener("click", this.revealClickedTile);
+        // currentButton.addEventListener("click", this.revealClickedTile);
         
         // currentButton.addEventListener("click", triggerLoss);
 
@@ -125,15 +125,15 @@ class Board {
         this.convertTo2DArray();
         this.incrementAdjacentMineTiles();
         console.log(this.boardGrid);
-        let str = ""
-        for (let i = 0; i < this.boardGrid.length;i++){
-            for (let j = 0; j < this.boardGrid[0].length;j++){
-                str += this.boardGrid[i][j].getValue();
+        // let str = ""
+        // for (let i = 0; i < this.boardGrid.length;i++){
+        //     for (let j = 0; j < this.boardGrid[0].length;j++){
+        //         str += this.boardGrid[i][j].getValue();
                 
-            }
-            console.log(str)
-            str = ""
-        }
+        //     }
+        //     console.log(str)
+        //     str = ""
+        // }
         this.buildPageElement();
     }
 
@@ -171,7 +171,7 @@ class Board {
                 //Set button data
                 this.boardGrid[i][j].buildPageElement();
                 const currentButton = this.boardGrid[i][j].pageElement;
-                // currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
+                currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
                 
                 currentButton.addEventListener("click", this.callRevealAdjacentTiles);
@@ -438,7 +438,39 @@ class Board {
     };
 
     revealAdjacentTiles = (currentX, currentY) => {
-        console.log("HUZZAH!");
+        let tile = this.boardGrid[currentX][currentY];
+        console.log(currentX, currentY);
+        console.log(tile);
+        console.log(tile.getValue());
+        
+        while (tile.getValue() == 0){
+            let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")
+            tileElement.style.color = "red";
+            //Check Bottom
+            if (currentX != this.boardGrid.length-1){
+                // let tileAdjacent = this.boardGrid[currentX+1][currentY];
+                if (this.boardGrid[currentX+1][currentY].getValue() == 0){
+                    this.revealAdjacentTiles(currentX+1, currentY);
+                }
+                else {
+                    this.boardGrid[currentX][currentY].setValue(2);
+                    tileElement.textContent = "0";
+                    
+                    let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX+1}/${currentY}`) + "]");
+                    if (adjacentTileElement.textContent != "0"){
+                        adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        adjacentTileElement.isClicked = "true";
+                        adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
+                    }
+                }
+            }
+            else {
+                this.boardGrid[currentX][currentY].setValue(2);
+                tileElement.textContent = "0";
+            }
+
+            return;
+        }
     };
 
     
