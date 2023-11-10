@@ -4,6 +4,7 @@ class Board {
     gridSizeX;
     gridSizeY;
     mineCount;
+    remainingTiles;
     buttonGridWidth;
     boardGrid = [];
     pageElement;
@@ -15,6 +16,7 @@ class Board {
     constructor(difficulty) {
         this.difficulty = difficulty;
         this.setDifficultyValues(difficulty);
+        this.remainingTiles = (this.gridSizeX * this.gridSizeY) - this.mineCount;
         this.generateStartBoardValues();
         this.shuffleBoard();
         this.convertTo2DArray();
@@ -101,6 +103,7 @@ class Board {
                 //Set button data
                 this.boardGrid[i][j].buildPageElement();
                 const currentButton = this.boardGrid[i][j].pageElement;
+                // To cheat uncomment the line below and comment the line in tile.js setting textContent to "?" to cheat
                 // currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
 
@@ -376,6 +379,10 @@ class Board {
         while (tile.getValue() == 0) {
             let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")
             tileElement.style.color = tile.determineTileColor((tile.getValue()));
+            if (tileElement.isClicked == "false"){
+                $("#playArea").remainingTiles -= 1;
+                console.log($("#playArea").remainingTiles);
+            }
             tileElement.isClicked = "true";
             //Check Bottom
             if (currentX != this.boardGrid.length - 1) {
@@ -389,6 +396,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -411,6 +422,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -433,6 +448,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -455,6 +474,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -477,6 +500,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -499,6 +526,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -521,6 +552,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }
@@ -543,6 +578,10 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
+                        if (adjacentTileElement.isClicked == "false"){
+                            $("#playArea").remainingTiles -= 1;
+                            console.log($("#playArea").remainingTiles);
+                        }
                         adjacentTileElement.isClicked = "true";
                         adjacentTileElement.style.color = tile.determineTileColor((adjacentTileElement.actualValue));
                     }

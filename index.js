@@ -46,16 +46,20 @@ document.addEventListener("DOMContentLoaded", () => {
     //Build the gameboard element when a difficulty is chosen and append to the page
     easyButton.pageElement.addEventListener("click", () => {
         let gameBoard = new Board(playArea.difficulty);
+        playArea.remainingTiles = gameBoard.remainingTiles;
         playArea.appendChild(gameBoard.pageElement);
     });
     mediumButton.pageElement.addEventListener("click", () => {
         let gameBoard = new Board(playArea.difficulty);
+        playArea.remainingTiles = gameBoard.remainingTiles;
         playArea.appendChild(gameBoard.pageElement);
     });
     hardButton.pageElement.addEventListener("click", () => {
         let gameBoard = new Board(playArea.difficulty);
+        playArea.remainingTiles = gameBoard.remainingTiles;
         playArea.appendChild(gameBoard.pageElement);
     });
+    
 
     //Build the timer element
     let timer = document.createElement("h3");
