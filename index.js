@@ -103,5 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("main").appendChild(menuArea);
     $("main").appendChild(playArea);
-    
+
 });

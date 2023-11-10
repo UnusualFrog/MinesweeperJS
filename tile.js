@@ -5,36 +5,36 @@ class Tile {
     x;
     y;
     pageElement;
-    constructor(value, x, y){
+    constructor(value, x, y) {
         this.value = value;
         this.x = x;
         this.y = y;
     }
 
-    getValue(){
+    getValue() {
         return this.value;
     }
 
-    setValue(newValue){
+    setValue(newValue) {
         this.value = newValue;
     }
 
-    getX(){
+    getX() {
         return this.x;
     }
-    setX(newX){
+    setX(newX) {
         this.x = newX;
     }
 
-    getY(){
+    getY() {
         return this.y;
     }
 
-    setY(newY){
+    setY(newY) {
         this.y = newY;
     }
-    
-    buildPageElement(){
+
+    buildPageElement() {
         const currentButton = document.createElement("button");
         currentButton.id = this.x + "/" + this.y;
         currentButton.classList = "gridButton";
@@ -55,10 +55,10 @@ class Tile {
         currentButton.style.height = "25px";
         this.pageElement = currentButton;
     }
-    
+
     // Reveals the value of the tile clicked, sets its color and increments the click counter
     revealClickedTile = (evt) => {
-        if (evt.target.isClicked == "false"){
+        if (evt.target.isClicked == "false") {
             evt.target.isClicked = "true";
             evt.target.textContent = evt.target.actualValue;
             evt.target.style.color = this.determineTileColor(evt.target.actualValue);
@@ -68,45 +68,45 @@ class Tile {
 
     // Triggers a game loss and disables the board when a mine (-1) tile is clicked
     triggerLoss = (evt) => {
-        if (evt.target.actualValue == -1){
+        if (evt.target.actualValue == -1) {
             $("#gameResult").textContent = "You Lose!";
             $("#gameResult").style.color = "red";
             $("#board").disabled = "disabled";
-            clearInterval(timerInterval);
+            // clearInterval(timerInterval);
         }
     };
 
     // Returns a color to be used for styling based on the tile value passed on
     // colors codes are based on official minesweeper colors
     determineTileColor = (tileValue) => {
-        if (tileValue == "-1"){
+        if (tileValue == "-1") {
             return "orange";
         }
-        else if (tileValue == "0"){
+        else if (tileValue == "0") {
             return "#CCCCCC";
         }
-        else if (tileValue == "1"){
+        else if (tileValue == "1") {
             return "#0100FE";
         }
-        else if (tileValue == "2"){
+        else if (tileValue == "2") {
             return "#008000";
         }
-        else if (tileValue == "3"){
+        else if (tileValue == "3") {
             return "#FE0000";
         }
-        else if (tileValue == "4"){
+        else if (tileValue == "4") {
             return "#00007F";
         }
-        else if (tileValue == "5"){
+        else if (tileValue == "5") {
             return "#800000";
         }
-        else if (tileValue == "6"){
+        else if (tileValue == "6") {
             return "#008081";
         }
-        else if (tileValue == "7"){
+        else if (tileValue == "7") {
             return "#000000";
         }
-        else if (tileValue == "8"){
+        else if (tileValue == "8") {
             return "#808080";
         }
         else {
