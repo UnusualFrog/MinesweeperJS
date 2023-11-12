@@ -22,7 +22,10 @@
 
 ## Screenshots
 
+### Main Menu
 ![Screnshot of main menu](images/menu.png)
+
+### Example Intermediate Game
 ![Screnshot of game being played](images/example.png)
 
 
