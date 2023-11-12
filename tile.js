@@ -42,7 +42,7 @@ class Tile {
     // Reveals the value of the tile clicked, sets its color and increments the click counter
     revealClickedTile = (evt) => {
         if (evt.target.isClicked == "false") {
-            if (evt.target.actualValue != -1){
+            if (evt.target.actualValue != -1) {
                 $("#playArea").remainingTiles -= 1;
                 console.log($("#playArea").remainingTiles);
             }
@@ -55,7 +55,7 @@ class Tile {
 
     // Triggers win when count of non-mine clicked tiles hits 0
     triggerWin = () => {
-        if ($("#playArea").remainingTiles == 0){
+        if ($("#playArea").remainingTiles == 0) {
             console.log("You win!");
             $("#gameResult").textContent = "You win!";
             $("#gameResult").style.color = "green";

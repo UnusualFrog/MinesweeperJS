@@ -1,8 +1,8 @@
 class MenuButton {
     id;
     pageElement;
-    
-    constructor (type) {
+
+    constructor(type) {
         this.id = type;
         this.buildPageElement();
     }
@@ -15,24 +15,24 @@ class MenuButton {
         $("#reset").hidden = false;
     };
 
-    buildPageElement(){
+    buildPageElement() {
         let menuButton = document.createElement("button");
-        if (this.id == "easy"){
+        if (this.id == "easy") {
             menuButton.textContent = "Beginner";
             menuButton.id = "easy";
             menuButton.classList = "menu";
         }
-        else if (this.id == "medium"){
+        else if (this.id == "medium") {
             menuButton.textContent = "Intermediate";
             menuButton.id = "medium";
             menuButton.classList = "menu";
         }
-        else if (this.id == "hard"){
+        else if (this.id == "hard") {
             menuButton.textContent = "Expert";
             menuButton.id = "hard";
             menuButton.classList = "menu";
         }
-        else if (this.id == "reset"){
+        else if (this.id == "reset") {
             menuButton.textContent = "Reset";
             menuButton.id = "reset";
             menuButton.classList = "menu";
@@ -40,5 +40,5 @@ class MenuButton {
         }
         this.pageElement = menuButton;
     }
-    
+
 }

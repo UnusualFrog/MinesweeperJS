@@ -69,6 +69,20 @@ class Board {
         $("#reset").hidden = false;
     };
 
+    setFlag = (evt) => {
+        // console.log(evt.button);
+        // console.log(evt.target);
+        let currentButton = evt.target;
+        if (currentButton.textContent == "#") {
+            currentButton.textContent = "?";
+            currentButton.style.color = "black";
+        }
+        else if (currentButton.isClicked == "false") {
+            currentButton.textContent = "#";
+            currentButton.style.color = "purple";
+        }
+    }
+
     // Set values dependant on difficulty
     setDifficultyValues(currentDifficulty) {
         if (currentDifficulty == "easy") {
@@ -108,6 +122,7 @@ class Board {
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
 
                 currentButton.addEventListener("click", this.callRevealAdjacentTiles);
+                currentButton.addEventListener("contextmenu", this.setFlag);
 
                 buttonGrid.appendChild(currentButton);
             }
@@ -379,7 +394,7 @@ class Board {
         while (tile.getValue() == 0) {
             let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")
             tileElement.style.color = tile.determineTileColor((tile.getValue()));
-            if (tileElement.isClicked == "false"){
+            if (tileElement.isClicked == "false") {
                 $("#playArea").remainingTiles -= 1;
                 console.log($("#playArea").remainingTiles);
             }
@@ -396,7 +411,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -422,7 +437,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -448,7 +463,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -474,7 +489,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -500,7 +515,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -526,7 +541,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX - 1}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -552,7 +567,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY - 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }
@@ -578,7 +593,7 @@ class Board {
                     let adjacentTileElement = document.querySelector("[id=" + CSS.escape(`${currentX + 1}/${currentY + 1}`) + "]");
                     if (adjacentTileElement.textContent != "0") {
                         adjacentTileElement.textContent = adjacentTileElement.actualValue;
-                        if (adjacentTileElement.isClicked == "false"){
+                        if (adjacentTileElement.isClicked == "false") {
                             $("#playArea").remainingTiles -= 1;
                             console.log($("#playArea").remainingTiles);
                         }

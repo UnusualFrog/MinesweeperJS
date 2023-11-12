@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Disabled defaukt context menu
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
     //Build title
     let title = document.createElement("h1");
     title.style.textAlign = "center";
@@ -18,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // //Build buttons for setting difficulty and reseting the game
     let easyButton = new MenuButton("easy");
-    let mediumButton =  new MenuButton("medium");
-    let hardButton =    new MenuButton("hard");
-    let resetButton =   new MenuButton("reset");
+    let mediumButton = new MenuButton("medium");
+    let hardButton = new MenuButton("hard");
+    let resetButton = new MenuButton("reset");
 
     // Reset page gameboard, counter, and timer elements when reset button clicked
     resetButton.pageElement.addEventListener("click", Board.resetPage);
@@ -59,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         playArea.remainingTiles = gameBoard.remainingTiles;
         playArea.appendChild(gameBoard.pageElement);
     });
-    
+
 
     //Build the timer element
     let timer = document.createElement("h3");
