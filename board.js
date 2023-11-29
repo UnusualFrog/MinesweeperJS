@@ -1,4 +1,6 @@
-// Gameboard that contains current game info and a fieldset element containing a number of tile elements based on the difficulty passed in
+/**
+ * Gameboard that contains current game info and a fieldset element containing a number of tile elements based on the difficulty passed in
+ *  */ 
 class Board {
     difficulty;
     gridSizeX;
@@ -10,9 +12,11 @@ class Board {
     pageElement;
     timerInterval;
 
-    //Sets game attributes based on the difficulty paramater,
-    // then generates values for a board based on the attributes set,
-    // and builds a DOM element using the board values
+    /**Sets game attributes based on the difficulty paramater,
+    * then generates values for a board based on the attributes set,
+    * and builds a DOM element using the board values
+    * @param difficulty difficulty value as a string, used to determine gameboard information (i.e. length, width, mine count)
+    * */
     constructor(difficulty) {
         this.difficulty = difficulty;
         this.setDifficultyValues(difficulty);
@@ -24,36 +28,49 @@ class Board {
         this.buildPageElement();
     }
 
-    //Resets the counter varibable for a new game
+    /**
+     * Resets the counter element to 0 for a new game
+     * */
     static resetCounter = () => {
         $("#counter").textContent = "000";
     }
 
-    //Starts the time when a new game is selected
+    /**
+     * Starts the timer when a new game is selected
+     * */
     static startTimer = () => {
         this.timerInterval = setInterval(this.incrementTimer, 1000);
         $("#timer").interval = this.timerInterval;
     };
 
-    //Increments the timer while a new game is running
+    /**
+     * Increments the timer while a new game is running
+     * Maintains leading zeros
+     * */
     static incrementTimer = () => {
         $("#timer").textContent = ('000' + (parseInt($("#timer").textContent) + 1)).slice(-3);
     };
 
-    //Resets the timer for a new game when reset it clicked
+    /**
+     * Resets the timer element to 0 for a new game when reset it clicked
+     * */
     static resetTimer = () => {
         $("#timer").textContent = "000";
         clearInterval(this.timerInterval);
     };
 
-    //Resets the page to its starting layout to start a new game
+    /**
+     * Resets the page to its starting layout to start a new game
+     * */
     static resetPage = () => {
         this.showMenuButtons();
         $("#board").remove();
         gameResult.textContent = "";
     };
 
-    //Hides the reset button and shows buttons associated with choosing difficulty 
+    /**
+     * Hides the reset button and shows menu buttons associated with choosing difficulty 
+     * */
     static showMenuButtons = () => {
         $("#easy").hidden = false;
         $("#medium").hidden = false;
@@ -61,7 +78,9 @@ class Board {
         $("#reset").hidden = true;
     };
 
-    //Hides buttons associated with choosing difficulty and shows the reset button
+    /**
+     * Hides menu buttons associated with choosing difficulty and shows the reset button
+     * */
     hideMenuButtons = () => {
         $("#easy").hidden = true;
         $("#medium").hidden = true;
@@ -69,9 +88,11 @@ class Board {
         $("#reset").hidden = false;
     };
 
+    /**
+     * Flags a clicked tile by setting its text to "#" to indicate that the user suspects the tile to be a mine
+     * @param {event} evt - evt that triggered the call, used to determine which game tile will be flagged
+     */
     setFlag = (evt) => {
-        // console.log(evt.button);
-        // console.log(evt.target);
         let currentButton = evt.target;
         if (currentButton.textContent == "#") {
             currentButton.textContent = "?";
@@ -83,7 +104,10 @@ class Board {
         }
     }
 
-    // Set values dependant on difficulty
+    /**
+     * Sets board values based on the input difficulty. Values include board x and y dimensions, the number of mines and the width of the DOM game board element
+     * @param {string} currentDifficulty - string holding the difficulty value, used to determine board values
+     */
     setDifficultyValues(currentDifficulty) {
         if (currentDifficulty == "easy") {
             this.gridSizeX = 9;
@@ -105,65 +129,81 @@ class Board {
         }
     };
 
-    // Build the actual DOM element to be appended to the page
+    /**
+     * Constructs a DOM element to be used as the gameboard containing a number of tiles
+     */
     buildPageElement() {
+        // Sets Initial DOM attributes
         let buttonGrid = document.createElement("fieldset");
         buttonGrid.id = "board";
         buttonGrid.style.padding = "20px";
         buttonGrid.style.margin = "auto";
         buttonGrid.style.width = this.buttonGridWidth;
+
+        // Construct rows of tiles
         for (let i = 0; i < this.gridSizeX; i++) {
             for (let j = 0; j < this.gridSizeY; j++) {
-                //Set button data
+                // Create button to act as a tile
                 this.boardGrid[i][j].buildPageElement();
                 const currentButton = this.boardGrid[i][j].pageElement;
+
                 // To cheat uncomment the line below and comment the line in tile.js setting textContent to "?" to cheat
                 // currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
 
+                // Add left and right click functionality for a tile
                 currentButton.addEventListener("click", this.callRevealAdjacentTiles);
                 currentButton.addEventListener("contextmenu", this.setFlag);
 
+                // Append tile to the game board
                 buttonGrid.appendChild(currentButton);
             }
-            // create and append a br element to break the lines.
+            // create and append a br element to break the row
             buttonGrid.appendChild(document.createElement("br"));
         }
+        // Store the constructed DOM game board element in the board object
         this.pageElement = buttonGrid;
     };
 
-    // Generates starting values for board
-    // Starts with a 1D array filled with (-1)s to represent mines
-    // Then fill the remaining button tiles with 0s
+    // 
+    // 
+    // 
+    /**
+     * Generates starting values for board
+     * Starts with a 1D array filled with (-1)s to represent mines
+     * Then fill the remaining button tiles with 0s
+     */
     generateStartBoardValues() {
+        // Fill the board with mine tiles equal to the mine count set by the game difficulty
         for (let i = 0; i < this.mineCount; i++) {
             this.boardGrid.push(new Tile(-1));
         }
 
+        // Fill the remaining board space with non-mine tiles of unspecified value
         while (this.boardGrid.length < this.gridSizeX * this.gridSizeY) {
             this.boardGrid.push(new Tile(0))
         }
     };
 
-    /*
-    Generates a 2D array of values matching the dimensions of the game board to be applied to the buttons
-    ## SORTING
-    The array is then sorted based on random criteria
-    For each 2 values being compared, a random number is generated between 0 and 1
-    0.5 is then subtracted from the random number, creating an effective random range of -0.5 to 0.5
-    Sort order is then determined based on the built-in compareFn(a,b) from the .sort's logic
-    if the random number is postive, sort the first value after the second value (b,a)
-    if the number is negative, sort the second after the first (a,b)
-    if the number is 0, maintain the original sort order
+   /**
+    * Shuffles the order of mine and non-mine tiles in the game board
+    * Sorting Explanation:
+    *   For each 2 values being compared, a random number is generated between 0 and 1                    
+    *   0.5 is then subtracted from the random number, creating an effective random range of -0.5 to 0.5
+    *   Sort order is then determined based on the built-in compareFn(a,b) from the .sort's logic
+    *   if the random number is postive, sort the first value after the second value (b,a)
+    *   if the number is negative, sort the second after the first (a,b)
+    *   if the number is 0, maintain the original sort order
     */
     shuffleBoard() {
         this.boardGrid.sort(() => Math.random() - 0.5);
     }
 
-    // Converts 1D array to 2D based on length of the grid
-    // loop through board length
-    // add values to temporary row
-    // when i is divisible by the length of 1 row, push the row to the sorted array and clear the temp row
+    /**
+     * Converts 1D array to 2D based on length of the grid
+     * loop through board length and add values to a temporary row
+     * when i is divisible by the length of 1 row, push the row to the new array and clear the temp row
+     */
     convertTo2DArray() {
         let new2Dboard = [];
         let tempRow = [];
@@ -180,7 +220,11 @@ class Board {
         this.boardGrid = new2Dboard;
     };
 
-    //Increment the value of tiles adjacent to mines
+    /**
+     * Loops through the 2D board array and increments the values of tiles adjacent to a mine by 1
+     * If the tile is not on the edge of the board, all 8 adjacent positions are checked
+     * If it is on an edge, the positions that would be outside the board will not be checked
+     */
     incrementAdjacentMineTiles() {
         for (let i = 0; i < this.boardGrid.length; i++) {
             for (let j = 0; j < this.boardGrid[0].length; j++) {
@@ -379,17 +423,27 @@ class Board {
         }
     };
 
-    //Starts the recursive function from the tile clicked
+    /**
+     * Starts the recursive function from the tile clicked
+     * @param {event} evt - evt that called the function, used to start the recursive check of adjacent tiles at the position of the tile clicked
+     */
     callRevealAdjacentTiles = (evt) => {
         let currentX = evt.target.x;
         let currentY = evt.target.y;
         this.revealAdjacentTiles(currentX, currentY);
     };
 
-    //Recursively reaveal adjacent 0 tiles and reveal and color mine numbers
+    /**
+     * Recursively checks tiles adjacent to a clicked tile, to reveal any non-mine tiles
+     * Each of the 8 adjacent position to a tile is checked and if "empty" tiles are found, the function is called on them recursivley
+     * Adjacent "number" tiles are revealed and colored, but not called recursively
+     * The base case occurs when a tile has no adjacent non-mine tiles
+     * @param {string} currentX - x coordinate of the current tile being recursively checked for adjacent non-mine tiles
+     * @param {string} currentY - y coordinate of the current tile being recursively checked for adjacent non-mine tiles
+     * @returns none - return is used to escape recursive calls when the base case is hit
+     */
     revealAdjacentTiles = (currentX, currentY) => {
         let tile = this.boardGrid[currentX][currentY];
-        // console.log(tile);
 
         while (tile.getValue() == 0) {
             let tileElement = document.querySelector("[id=" + CSS.escape(`${currentX}/${currentY}`) + "]")
@@ -607,9 +661,7 @@ class Board {
                 tileElement.textContent = "0";
             }
 
-
-
-
+            // Base Case, no adjacent tiles are "empty"
             return;
         }
     };

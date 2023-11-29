@@ -124,7 +124,7 @@ class Tile {
 
     /**  Returns a color to be used for styling based on the tile value passed on
     * colors codes are based on official minesweeper colors
-    * @returns {"string"} a string that represents a color than can be supplied to CSS styling
+    * @returns {String} a string that represents a color than can be supplied to CSS styling
     */
     determineTileColor = (tileValue) => {
         if (tileValue == "-1") {
