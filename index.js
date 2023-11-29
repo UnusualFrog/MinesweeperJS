@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Disabled defaukt context menu
+    // Disable default context menu action on right click
     document.addEventListener('contextmenu', event => event.preventDefault());
 
-    //Build title
+    //Build title element and append to page
     let title = document.createElement("h1");
     title.style.textAlign = "center";
     title.textContent = "Welcome to Minesweeper";
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let playArea = document.createElement("div");
     playArea.id = "playArea";
 
-    //Build area for menu elements
+    //Build area for menu elements and style it
     let menuArea = document.createElement("div");
     menuArea.id = "menuArea";
     menuArea.style.width = "100%";
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mediumButton.pageElement.addEventListener("click", MenuButton.hideMenuButtons);
     hardButton.pageElement.addEventListener("click", MenuButton.hideMenuButtons);
 
-    // Set difficulty value for later generation
+    // Set difficulty value for later generation of game board
     easyButton.pageElement.addEventListener("click", () => {
         playArea.difficulty = "easy";
     });
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    //Build the timer element
+    //Build the timer element and style it
     let timer = document.createElement("h3");
     timer.id = "timer";
     timer.textContent = "000";
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timer.style.color = "red";
     timer.style.backgroundColor = "black";
 
-    //Build the counter element
+    //Build the counter element and style it
     let counter = document.createElement("h3");
     counter.id = "counter";
     counter.textContent = "000";
@@ -84,12 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let gameResult = document.createElement("h4");
     gameResult.id = "gameResult";
 
-    //Start the timer
+    //Start the timer when the game starts
     easyButton.pageElement.addEventListener("click", Board.startTimer);
     mediumButton.pageElement.addEventListener("click", Board.startTimer);
     hardButton.pageElement.addEventListener("click", Board.startTimer);
 
-    //Center elements within playarea
+    //Center elements within playarea container
     menuArea.style.textAlign = "center";
 
     //Add the menu elements to the play area
@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menuArea.appendChild(timer);
     menuArea.appendChild(gameResult);
 
+    //Append game areas to the page
     $("main").appendChild(menuArea);
     $("main").appendChild(playArea);
 
