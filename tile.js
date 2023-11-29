@@ -1,15 +1,16 @@
 const $ = selector => document.querySelector(selector);
 
-/*
+/** 
 * Class to represent a tile with coordinates (x,y) and a value in the grid for the game
- * */ 
+* @author Noah Forward
+*/ 
 class Tile {
     value;
     x;
     y;
     pageElement;
     
-    /*
+    /**
     * Builds a tilte object and sets its value and coordinates
     * @param {value} value held by the tile as an integer
     * @param  {x} X coordinate of the tile's location
@@ -69,14 +70,14 @@ class Tile {
         this.y = newY;
     }
 
-    /*
+    /** 
     *Increments the counter element the first time a grid button is clicked
     */
     incrementClickCounter = () => {
         $("#counter").textContent = ('000' + (parseInt($("#counter").textContent) + 1)).slice(-3);
     }
 
-    /*
+    /**
     * Reveals the value of the tile clicked, sets its color and increments the click counter
     * Won't go through if the tile is marked as "isClicked"
     */
@@ -93,7 +94,7 @@ class Tile {
         };
     };
 
-    /*
+    /** 
     * Triggers win when count of non-mine clicked tiles hits 0
     * Adds Win message to game area
     * Disables the game board and stops the timer
@@ -108,7 +109,7 @@ class Tile {
         };
     };
 
-    /*
+    /**
     * Triggers a game loss, stops the timer and disables the board when a mine (-1) tile is clicked
     * Adds loss message to game area
     */
@@ -121,7 +122,7 @@ class Tile {
         }
     };
 
-    /* Returns a color to be used for styling based on the tile value passed on
+    /**  Returns a color to be used for styling based on the tile value passed on
     * colors codes are based on official minesweeper colors
     * @returns {"string"} a string that represents a color than can be supplied to CSS styling
     */
@@ -161,7 +162,7 @@ class Tile {
         }
     };
 
-    /*
+    /** 
     * Builds a button DOM element to represent a tile in the gameboard
     */
     buildPageElement() {
