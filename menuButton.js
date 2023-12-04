@@ -7,7 +7,7 @@ class MenuButton {
     pageElement;
 
     /**
-     * Builds a menu button object, sets it's type and builds it's DOM element
+     * Builds a menu button object, sets it's type and builds it's DOM element based on difficulty
      * 
      */
     constructor(type) {

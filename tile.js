@@ -123,7 +123,7 @@ class Tile {
     };
 
     /**  Returns a color to be used for styling based on the tile value passed on
-    * colors codes are based on official minesweeper colors
+    *    Color codes are based on official minesweeper colors
     * @returns {String} a string that represents a color than can be supplied to CSS styling
     */
     determineTileColor = (tileValue) => {
@@ -176,6 +176,7 @@ class Tile {
         // To cheat comment the line below and uncomment the line in board.js setting textContent to "this.boardGrid[currentButton.x][currentButton.y].getValue();"
         currentButton.textContent = "?";
 
+        // Add click behaviors
         currentButton.addEventListener("click", this.revealClickedTile);
         currentButton.addEventListener("click", this.triggerLoss);
         currentButton.addEventListener("click", this.triggerWin);

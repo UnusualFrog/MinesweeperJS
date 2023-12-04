@@ -1,5 +1,6 @@
 /**
  * Gameboard that contains current game info and a fieldset element containing a number of tile elements based on the difficulty passed in
+ * @author Noah Forward
  *  */ 
 class Board {
     difficulty;
@@ -20,6 +21,7 @@ class Board {
     constructor(difficulty) {
         this.difficulty = difficulty;
         this.setDifficultyValues(difficulty);
+        // Remaining non-mine tile count, used for checking if game has been won
         this.remainingTiles = (this.gridSizeX * this.gridSizeY) - this.mineCount;
         this.generateStartBoardValues();
         this.shuffleBoard();
@@ -147,7 +149,7 @@ class Board {
                 this.boardGrid[i][j].buildPageElement();
                 const currentButton = this.boardGrid[i][j].pageElement;
 
-                // To cheat uncomment the line below and comment the line in tile.js setting textContent to "?" to cheat
+                // To cheat, uncomment the line below and comment the line in tile.js setting textContent to "?" to cheat
                 // currentButton.textContent = this.boardGrid[currentButton.x][currentButton.y].getValue();
                 currentButton.actualValue = this.boardGrid[i][j].getValue();
 
@@ -165,9 +167,6 @@ class Board {
         this.pageElement = buttonGrid;
     };
 
-    // 
-    // 
-    // 
     /**
      * Generates starting values for board
      * Starts with a 1D array filled with (-1)s to represent mines
